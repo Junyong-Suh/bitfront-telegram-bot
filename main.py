@@ -14,7 +14,7 @@ def notifyTelegram(bot_id, chat_id, msg):
         url="https://api.telegram.org/bot"+bot_id+"/sendMessage",
         json={"chat_id": chat_id, "text": msg}
     )
-    # print(r.json())
+    print(r.json())
 
 def getCoinPair(ticker1, ticker2):
     r = requests.get("https://openapi.bitfront.me/v1/market/public/currentTickValue?coinPair="+ ticker1 +"."+ ticker2 +"")
@@ -35,5 +35,9 @@ def composeResult():
 # 2. Periodic Job (Lambda if no % change required)
 # 3. Dynamic Lower and High Prices settings ($4 or less LN & $6 or higher LN)
 # 4. Dynamic on and off
-msg = "WORK HARD MAKE MONEY\n" + composeResult()
-notifyAllOnTelegram(msg)
+
+if not confidentials.TELEGRAM_IDS:
+    print("No Telegram IDs to send the message - Add your Telegram IDs to ./confidentials.py (Please read README.md)")
+else:
+    msg = "WORK HARD MAKE MONEY\n" + composeResult()
+    notifyAllOnTelegram(msg)
