@@ -26,14 +26,12 @@ def worth_notify(last_prices):
     # ETH Price Min and Max
     worth_eth = last_prices['eth_usd'] < 100 or 120 < last_prices['eth_usd']
     # LN Price Min and Max
-    worth_ln = last_prices['ln_usd'] < 4.5 or 6 < last_prices['ln_usd']
+    worth_ln = last_prices['ln_usd'] < 4.5 # or 6 < last_prices['ln_usd']
     return worth_btc or worth_eth or worth_ln
 
 # ToDos
 # 1. History and Statistics :: % change from the last notification
-# 2. Periodic Job (Lambda if no % change required)
-# 3. Dynamic Lower and High Prices settings ($4 or less LN & $6 or higher LN)
-# 4. Dynamic on and off
+# 2. Dynamic register and deregister of telegram ids (from the bot)
 
 def main():
     # exit if no receiver
