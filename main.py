@@ -1,34 +1,33 @@
 import requests
 import confidentials
+import telegram
+import bitfront
+import time
 
-def getMe(bot_id):
-    r = requests.get("https://api.telegram.org/bot"+ bot_id +"/getMe")
-    return r.json()
+# As a input to time.sleep() in sec
+class PRICE_CHECK_INTERVAL():
+    def Often():
+        return 60   # every min
+    def Casual():
+        return 600  # every 10 min
+    def Slow():
+        return 3600 # every hour
 
-def notifyAllOnTelegram(msg):
-    for id in confidentials.TELEGRAM_IDS:
-        notifyTelegram(confidentials.FOREIGN_WORKER_BOT_ID, id, msg)
-
-def notifyTelegram(bot_id, chat_id, msg):
-    r = requests.post(
-        url="https://api.telegram.org/bot"+bot_id+"/sendMessage",
-        json={"chat_id": chat_id, "text": msg}
-    )
-    print(r.json())
-
-def getCoinPair(ticker1, ticker2):
-    r = requests.get("https://openapi.bitfront.me/v1/market/public/currentTickValue?coinPair="+ ticker1 +"."+ ticker2 +"")
-    return r.json()
-
-def composeResult():
-    r = getCoinPair("ETH", "USD")
-    eth_usd = r['responseData']['last']
-    r = getCoinPair("BTC", "USD")
-    btc_usd = r['responseData']['last']
-    r = getCoinPair("LN", "BTC")
-    ln_btc = r['responseData']['last']
+def composeResult(last_prices):
+    eth_usd = last_prices['eth_usd']
+    btc_usd = last_prices['btc_usd']
+    ln_btc = last_prices['ln_btc']
     ln_usd = round(btc_usd * ln_btc, 2)
     return "1LN = $"+ str(ln_usd) +" ("+ str(ln_btc) + " BTC)" + "\n1BTC = $"+ str(btc_usd) + "\n1ETH = $"+ str(eth_usd)
+
+def worth_notify(last_prices):
+    # BTC Price Min and Max
+    worth_btc = last_prices['btc_usd'] < 5000 or 5500 < last_prices['btc_usd']
+    # ETH Price Min and Max
+    worth_eth = last_prices['eth_usd'] < 100 or 120 < last_prices['eth_usd']
+    # LN Price Min and Max
+    worth_ln = last_prices['ln_usd'] < 4.5 or 6 < last_prices['ln_usd']
+    return worth_btc or worth_eth or worth_ln
 
 # ToDos
 # 1. History and Statistics :: % change from the last notification
@@ -36,8 +35,22 @@ def composeResult():
 # 3. Dynamic Lower and High Prices settings ($4 or less LN & $6 or higher LN)
 # 4. Dynamic on and off
 
-if not confidentials.TELEGRAM_IDS:
-    print("No Telegram IDs to send the message - Add your Telegram IDs to ./confidentials.py (Please read README.md)")
-else:
-    msg = "WORK HARD MAKE MONEY\n" + composeResult()
-    notifyAllOnTelegram(msg)
+def main():
+    # exit if no receiver
+    if not confidentials.TELEGRAM_IDS:
+        print("No Telegram IDs to send the message - Add your Telegram IDs to ./confidentials.py (Please read README.md)")
+        return
+
+    # grab the prices and notify
+    while True:
+        last_prices = bitfront.grabPrices()
+        if worth_notify(last_prices):
+            msg = "WORK HARD MAKE MONEY\n" + composeResult(last_prices)
+            telegram.notifyAllOnTelegram(msg)
+            time.sleep(PRICE_CHECK_INTERVAL.Often())
+        else:
+            print(last_prices)
+            time.sleep(PRICE_CHECK_INTERVAL.Casual())
+
+# main
+main()

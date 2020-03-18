@@ -4,28 +4,24 @@ A simple Python script to notify price alerts from [Bitfront](https://www.bitfro
 
 ## Requirements
 
-* Works on both Python 2.7.17+ and Python 3.6.9+
+* Requires Python 3.7.4+
 * The only dependency: [requests](https://requests.readthedocs.io/en/master/)
 
 ## Quick Start
 
-### Install Python
-
-```
-brew install python3 # either python or python3
-```
-
 ### Clone the Code
 
 ```
-git clone git@github.com:Junyong-Suh/bitfront-telegram-bot.git
+$ git clone git@github.com:Junyong-Suh/bitfront-telegram-bot.git
 ```
 
 ### Install Dependencies
 
 ```
-cd bitfront-telegram-bot
-pip3 install -r requirements.txt # either pip or pip3
+$ python --version
+Python 3.7.7
+$ cd bitfront-telegram-bot
+$ pip3 install -r requirements.txt
 ```
 
 ### Get Your Credentials
@@ -39,9 +35,9 @@ Update your credentials to [`credentials.py`](https://github.com/Junyong-Suh/bit
 ### Run the Script
 
 ```
-python3 main.py
+python main.py
 ```
-You will get the message from the bot.
+You will get the message from the bot
 
 ## References
 * [https://core.telegram.org/bots/api#making-requests](https://core.telegram.org/bots/api#making-requests)
