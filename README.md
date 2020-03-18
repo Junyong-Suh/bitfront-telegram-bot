@@ -32,6 +32,16 @@ Update your credentials to [`credentials.py`](https://github.com/Junyong-Suh/bit
 
 * How to get your Telegram ID: [https://support.bigone.com/hc/en-us/articles/360008014894-How-to-get-the-Telegram-user-ID-](https://support.bigone.com/hc/en-us/articles/360008014894-How-to-get-the-Telegram-user-ID-)
 
+(Optional) Once you update your credentials, make Git not to track the file
+
+```
+# untrack
+$ git update-index --assume-unchanged confidentials.py
+
+# track again
+# git update-index --no-assume-unchanged confidentials.py
+```
+
 ### Run the Script
 
 ```
