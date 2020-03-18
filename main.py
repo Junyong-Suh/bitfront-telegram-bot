@@ -5,6 +5,10 @@ def getMe(bot_id):
     r = requests.get("https://api.telegram.org/bot"+ bot_id +"/getMe")
     return r.json()
 
+def notifyAllOnTelegram(msg):
+    for id in confidentials.TELEGRAM_IDS:
+        notifyTelegram(confidentials.FOREIGN_WORKER_BOT_ID, id, msg)
+
 def notifyTelegram(bot_id, chat_id, msg):
     r = requests.post(
         url="https://api.telegram.org/bot"+bot_id+"/sendMessage",
@@ -31,9 +35,5 @@ def composeResult():
 # 2. Periodic Job (Lambda if no % change required)
 # 3. Dynamic Lower and High Prices settings ($4 or less LN & $6 or higher LN)
 # 4. Dynamic on and off
-
-notifyTelegram(
-    confidentials.FOREIGN_WORKER_BOT_ID,
-    confidentials.FOREIGN_WORKER_TELEGRAM_ID,
-    "WORK HARD MAKE MONEY\n" + composeResult()
-)
+msg = "WORK HARD MAKE MONEY\n" + composeResult()
+notifyAllOnTelegram(msg)
