@@ -1,7 +1,7 @@
 import requests
 import confidentials
 
-# grab the bot info
+# the bot info
 def getMe(bot_id):
     r = requests.get("https://api.telegram.org/bot"+ bot_id +"/getMe")
     return r.json()

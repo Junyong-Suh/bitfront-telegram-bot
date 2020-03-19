@@ -39,9 +39,9 @@ def main():
         print("No Telegram IDs to send the message - Add your Telegram IDs to ./confidentials.py (Please read README.md)")
         return
 
-    # grab the prices and notify
+    # get the last prices and notify
     while True:
-        last_prices = bitfront.grabPrices()
+        last_prices = bitfront.getLastPrices()
         if worth_notify(last_prices):
             msg = "WORK HARD MAKE MONEY\n" + composeResult(last_prices)
             telegram.notifyAllOnTelegram(msg)
