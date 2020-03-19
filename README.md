@@ -42,12 +42,32 @@ $ git update-index --assume-unchanged confidentials.py
 # git update-index --no-assume-unchanged confidentials.py
 ```
 
+### Subscribe to Your Bot
+
+Turn on your Telegram App, find your bot and add.
+
 ### Run the Script
 
 ```
 python main.py
 ```
-You will get the message from the bot
+You will get messages from the bot
+
+## Docker
+
+Assume that you set the credentials and subscribed to your bot. 
+
+* Build the image
+
+```
+docker build -t bitfront-price-alert .
+```
+
+* Run 
+
+```
+docker run bitfront-price-alert:latest
+```
 
 ## References
 * [https://core.telegram.org/bots/api#making-requests](https://core.telegram.org/bots/api#making-requests)
