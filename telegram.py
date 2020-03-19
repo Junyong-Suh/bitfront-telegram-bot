@@ -1,24 +1,27 @@
 import requests
 import confidentials
 
+
 # the bot info
-def getMe(bot_id):
-    r = requests.get("https://api.telegram.org/bot"+ bot_id +"/getMe")
+def get_me(bot_id):
+    r = requests.get("https://api.telegram.org/bot" + bot_id + "/getMe")
     return r.json()
 
+
 # notify to all receivers on Telegram
-def notifyAllOnTelegram(msg, toPremiumUsers=False):
-    if toPremiumUsers:
-        for id in confidentials.TELEGRAM_IDS_PREMIUM:
-            notifyTelegram(confidentials.FOREIGN_WORKER_BOT_ID, id, msg)
+def notify_all_on_telegram(msg, to_premium_users=False):
+    if to_premium_users:
+        for tid in confidentials.TELEGRAM_IDS_PREMIUM:
+            notify_telegram(confidentials.FOREIGN_WORKER_BOT_ID, tid, msg)
     else:
-        for id in confidentials.TELEGRAM_IDS_SUBSCRIBER:
-            notifyTelegram(confidentials.FOREIGN_WORKER_BOT_ID, id, msg)
+        for tid in confidentials.TELEGRAM_IDS_SUBSCRIBER:
+            notify_telegram(confidentials.FOREIGN_WORKER_BOT_ID, tid, msg)
+
 
 # notify to Telegram chat
-def notifyTelegram(bot_id, chat_id, msg):
+def notify_telegram(bot_id, chat_id, msg):
     r = requests.post(
-        url="https://api.telegram.org/bot"+bot_id+"/sendMessage",
+        url="https://api.telegram.org/bot" + bot_id + "/sendMessage",
         json={"chat_id": chat_id, "text": msg}
     )
     print(r.json())

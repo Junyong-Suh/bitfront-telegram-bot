@@ -2,18 +2,24 @@ import bitfront
 import confidentials
 import telegram
 import time
-import requests
+
 
 # As a input to time.sleep() in sec
-class PRICE_CHECK_INTERVAL():
-    def ONE_MIN():
-        return 60   # every min
-    def TEN_MIN():
-        return 600  # every 10 min
-    def ONE_HOUR():
-        return 3600 # every hour
+class PriceCheckInterval:
+    @staticmethod
+    def one_min():
+        return 60  # every min
 
-def composeResult(current_prices):
+    @staticmethod
+    def ten_min():
+        return 600  # every 10 min
+
+    @staticmethod
+    def one_hour():
+        return 3600  # every hour
+
+
+def compose_result(current_prices):
     eth_usd = current_prices['eth_usd']
     btc_usd = current_prices['btc_usd']
     ln_btc = current_prices['ln_btc']
@@ -21,6 +27,7 @@ def composeResult(current_prices):
     return "1LN = ${0} ({1} BTC)\n1BTC = ${2}\n1ETH = ${3}".format(
         str(ln_usd), str(ln_btc), str(btc_usd), str(eth_usd)
     )
+
 
 def worth_notify(current_prices):
     # BTC Price Min and Max
@@ -31,8 +38,9 @@ def worth_notify(current_prices):
     worth_ln = current_prices['ln_usd'] < 4.5 # or 6 < current_prices['ln_usd']
     return worth_btc or worth_eth or worth_ln
 
+
 def has_been_an_hour(current_prices, last_run_prices):
-    return PRICE_CHECK_INTERVAL.ONE_HOUR() < current_prices['timestamp_utc'] - last_run_prices['timestamp_utc']
+    return PriceCheckInterval.one_hour() < current_prices['timestamp_utc'] - last_run_prices['timestamp_utc']
 
 # ToDos
 # 1. History and Statistics :: % change from the last notification
@@ -40,36 +48,40 @@ def has_been_an_hour(current_prices, last_run_prices):
 # 3. Add unit tests
 # 4. Add integration tests
 
+
 def main():
     # exit if no receiver
     if not confidentials.TELEGRAM_IDS_SUBSCRIBER:
-        print("No Telegram IDs to send the message - Add your Telegram IDs to ./confidentials.py (Please read README.md)")
+        print(
+            'No Telegram IDs to send the message - Set your ./confidentials.py (Please read README.md)'
+        )
         return
 
     # initialize
-    last_run_prices = bitfront.getLastPrices() # will be replaced by a class
+    last_run_prices = bitfront.get_last_prices()  # will be replaced by a class
     time.sleep(3)
 
     # get the last prices and notify
     while True:
-        current_prices = bitfront.getLastPrices()
+        current_prices = bitfront.get_last_prices()
         print(current_prices) # log to STDOUT
 
         if worth_notify(current_prices):
             # event notification
-            msg = "WORK HARD MAKE MONEY\n" + composeResult(current_prices)
-            telegram.notifyAllOnTelegram(msg, True) # to premium users only
-            time.sleep(PRICE_CHECK_INTERVAL.ONE_MIN())
+            msg = "WORK HARD MAKE MONEY\n" + compose_result(current_prices)
+            telegram.notify_all_on_telegram(msg, True)  # to premium users only
+            time.sleep(PriceCheckInterval.one_min())
         elif has_been_an_hour(current_prices, last_run_prices):
             # hourly notification
-            msg = "[Hourly Notification]\n" + composeResult(current_prices)
-            telegram.notifyAllOnTelegram(msg, False) # to subscribers
-            time.sleep(PRICE_CHECK_INTERVAL.TEN_MIN())
+            msg = "[Hourly Notification]\n" + compose_result(current_prices)
+            telegram.notify_all_on_telegram(msg, False)  # to subscribers
+            time.sleep(PriceCheckInterval.ten_min())
         else:
             # no notification
-            time.sleep(PRICE_CHECK_INTERVAL.TEN_MIN())
+            time.sleep(PriceCheckInterval.ten_min())
 
-        last_run_prices  = current_prices  # update the status
+        last_run_prices = current_prices  # update the status
+
 
 # main
 main()
