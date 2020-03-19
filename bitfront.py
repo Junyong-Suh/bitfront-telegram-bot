@@ -1,5 +1,5 @@
-import requests
 from datetime import datetime
+import requests
 
 # get coin pair from bitfront
 def getCoinPair(ticker1, ticker2):

@@ -24,9 +24,9 @@ $ cd bitfront-telegram-bot
 $ pip3 install -r requirements.txt
 ```
 
-### Get Your Credentials
+### Set Your Credentials
 
-Update your credentials to [`credentials.py`](https://github.com/Junyong-Suh/bitfront-telegram-bot/blob/master/confidentials.py)
+Rename `credentials_empty.py` to `credentials.py` and set your credentials
 
 * How to get your own Telegram Bot and the ID: [https://core.telegram.org/bots](https://core.telegram.org/bots)
 
