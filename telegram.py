@@ -9,13 +9,9 @@ def get_me(bot_id):
 
 
 # notify to all receivers on Telegram
-def notify_all_on_telegram(msg, to_premium_users=False):
-    if to_premium_users:
-        for tid in confidentials.TELEGRAM_IDS_PREMIUM:
-            notify_telegram(confidentials.FOREIGN_WORKER_BOT_ID, tid, msg)
-    else:
-        for tid in confidentials.TELEGRAM_IDS_SUBSCRIBER:
-            notify_telegram(confidentials.FOREIGN_WORKER_BOT_ID, tid, msg)
+def notify_on_telegram(telegram_ids, msg):
+    for tid in telegram_ids:
+        notify_telegram(confidentials.FOREIGN_WORKER_BOT_ID, tid, msg)
 
 
 # notify to Telegram chat

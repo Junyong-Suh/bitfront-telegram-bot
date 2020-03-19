@@ -31,16 +31,16 @@ def compose_result(current_prices):
 
 def worth_notify(current_prices):
     # BTC Price Min and Max
-    worth_btc = current_prices['btc_usd'] < 5000 or 5500 < current_prices['btc_usd']
+    worth_btc = current_prices['btc_usd'] < 5250 or 5500 < current_prices['btc_usd']
     # ETH Price Min and Max
-    worth_eth = current_prices['eth_usd'] < 100 or 120 < current_prices['eth_usd']
+    worth_eth = current_prices['eth_usd'] < 105 or 120 < current_prices['eth_usd']
     # LN Price Min and Max
-    worth_ln = current_prices['ln_usd'] < 4.5 # or 6 < current_prices['ln_usd']
+    worth_ln = current_prices['ln_usd'] < 4.5  # or 6 < current_prices['ln_usd']
     return worth_btc or worth_eth or worth_ln
 
 
-def has_been_an_hour(current_prices, last_run_prices):
-    return PriceCheckInterval.one_hour() < current_prices['timestamp_utc'] - last_run_prices['timestamp_utc']
+def has_been_an_hour(ts):
+    return PriceCheckInterval.one_hour() < time.time() - ts
 
 # ToDos
 # 1. History and Statistics :: % change from the last notification
@@ -58,29 +58,27 @@ def main():
         return
 
     # initialize
-    last_run_prices = bitfront.get_last_prices()  # will be replaced by a class
-    time.sleep(3)
+    last_hourly_notification_ts = time.time()
 
     # get the last prices and notify
     while True:
         current_prices = bitfront.get_last_prices()
-        print(current_prices) # log to STDOUT
+        print(current_prices)  # log to STDOUT
 
         if worth_notify(current_prices):
             # event notification
             msg = "WORK HARD MAKE MONEY\n" + compose_result(current_prices)
-            telegram.notify_all_on_telegram(msg, True)  # to premium users only
+            telegram.notify_on_telegram(confidentials.TELEGRAM_IDS_PREMIUM, msg)
             time.sleep(PriceCheckInterval.one_min())
-        elif has_been_an_hour(current_prices, last_run_prices):
+        elif has_been_an_hour(last_hourly_notification_ts):
             # hourly notification
             msg = "[Hourly Notification]\n" + compose_result(current_prices)
-            telegram.notify_all_on_telegram(msg, False)  # to subscribers
+            telegram.notify_on_telegram(confidentials.TELEGRAM_IDS_SUBSCRIBER, msg)
+            last_hourly_notification_ts = time.time()
             time.sleep(PriceCheckInterval.ten_min())
         else:
             # no notification
             time.sleep(PriceCheckInterval.ten_min())
-
-        last_run_prices = current_prices  # update the status
 
 
 # main
