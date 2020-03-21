@@ -2,8 +2,10 @@ import bitfront
 import confidentials
 import telegram
 import time
+import logging
 
-VERSION = "v1.4.2"  # build & docker version - to be automated
+VERSION = "v1.4.3"  # build & docker version - to be automated
+logging.basicConfig(level=logging.INFO)
 
 
 # As a input to time.sleep() in sec
@@ -21,14 +23,31 @@ class PriceCheckInterval:
         return 3600  # every hour
 
 
-def compose_result(current_prices):
-    eth_usd = current_prices['eth_usd']
-    btc_usd = current_prices['btc_usd']
-    ln_btc = current_prices['ln_btc']
-    ln_usd = round(btc_usd * ln_btc, 2)
-    return "1LN = ${0} ({1} BTC)\n1BTC = ${2}\n1ETH = ${3}".format(
-        str(ln_usd), str(ln_btc), str(btc_usd), str(eth_usd)
+def notify_by_event(current_prices, last_prices):
+    result = compose_result(current_prices, last_prices)
+    msg = "WORK HARD MAKE MONEY\n" + result + "\nBot " + VERSION
+    telegram.notify_on_telegram(confidentials.TELEGRAM_IDS_PREMIUM, msg)
+
+
+def notify_by_period(current_prices, last_prices):
+    result = compose_result(current_prices, last_prices)
+    msg = "[Hourly]\n" + result + "\nBot " + VERSION
+    telegram.notify_on_telegram(confidentials.TELEGRAM_IDS_SUBSCRIBER, msg)
+
+
+def compose_result(current_prices, last_prices):
+    return "1LN = ${0}\n1BTC = ${1}\n1ETH = ${2}".format(
+        get_pair_result(current_prices, last_prices, 'ln_usd'),
+        get_pair_result(current_prices, last_prices, 'btc_usd'),
+        get_pair_result(current_prices, last_prices, 'eth_usd')
     )
+
+
+def get_pair_result(current, last, key):
+    percent_point_changed = 0
+    if last and 0 < current[key]:
+        percent_point_changed = (last[key] - current[key]) / current[key]
+    return "{0} ({1:+.2f}%)".format(current[key], percent_point_changed * 100)
 
 
 def worth_notify(current_prices):
@@ -54,29 +73,30 @@ def has_been_an_hour(ts):
 def main():
     # exit if no receiver
     if not confidentials.TELEGRAM_IDS_SUBSCRIBER:
-        print(
-            'No Telegram IDs to send the message - Set your ./confidentials.py (Please read README.md)'
+        logging.error(
+            'No Telegram IDs to send the message - Set your confidentials.py (Read README.md)'
         )
         return
 
     # initialize
     last_hourly_notification_ts = time.time()
+    last_event_prices = last_hourly_prices = {}
 
     # get the last prices and notify
     while True:
         current_prices = bitfront.get_last_prices()
-        print(current_prices)  # log to STDOUT
+        logging.info(current_prices)  # log to STDOUT
 
         if worth_notify(current_prices):
             # event notification
-            msg = "WORK HARD MAKE MONEY\n" + compose_result(current_prices) + "\nBot " + VERSION
-            telegram.notify_on_telegram(confidentials.TELEGRAM_IDS_PREMIUM, msg)
+            notify_by_event(current_prices, last_event_prices)
+            last_event_prices = current_prices
             time.sleep(PriceCheckInterval.one_min())
         elif has_been_an_hour(last_hourly_notification_ts):
             # hourly notification
-            msg = "[Hourly]\n" + compose_result(current_prices) + "\nBot " + VERSION
-            telegram.notify_on_telegram(confidentials.TELEGRAM_IDS_SUBSCRIBER, msg)
+            notify_by_period(current_prices, last_hourly_prices)
             last_hourly_notification_ts = time.time()
+            last_hourly_prices = current_prices
             time.sleep(PriceCheckInterval.ten_min())
         else:
             # no notification
