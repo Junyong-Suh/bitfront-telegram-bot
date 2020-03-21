@@ -3,6 +3,8 @@ import confidentials
 import telegram
 import time
 
+VERSION = "v1.4.2"  # build & docker version - to be automated
+
 
 # As a input to time.sleep() in sec
 class PriceCheckInterval:
@@ -31,9 +33,9 @@ def compose_result(current_prices):
 
 def worth_notify(current_prices):
     # BTC Price Min and Max
-    worth_btc = current_prices['btc_usd'] < 5250 or 5500 < current_prices['btc_usd']
+    worth_btc = current_prices['btc_usd'] < 5200  # or 5500 < current_prices['btc_usd']
     # ETH Price Min and Max
-    worth_eth = current_prices['eth_usd'] < 105 or 120 < current_prices['eth_usd']
+    worth_eth = current_prices['eth_usd'] < 125  # or 120 < current_prices['eth_usd']
     # LN Price Min and Max
     worth_ln = current_prices['ln_usd'] < 4.5  # or 6 < current_prices['ln_usd']
     return worth_btc or worth_eth or worth_ln
@@ -67,12 +69,12 @@ def main():
 
         if worth_notify(current_prices):
             # event notification
-            msg = "WORK HARD MAKE MONEY\n" + compose_result(current_prices)
+            msg = "WORK HARD MAKE MONEY\n" + compose_result(current_prices) + "\nBot " + VERSION
             telegram.notify_on_telegram(confidentials.TELEGRAM_IDS_PREMIUM, msg)
             time.sleep(PriceCheckInterval.one_min())
         elif has_been_an_hour(last_hourly_notification_ts):
             # hourly notification
-            msg = "[Hourly Notification]\n" + compose_result(current_prices)
+            msg = "[Hourly]\n" + compose_result(current_prices) + "\nBot " + VERSION
             telegram.notify_on_telegram(confidentials.TELEGRAM_IDS_SUBSCRIBER, msg)
             last_hourly_notification_ts = time.time()
             time.sleep(PriceCheckInterval.ten_min())
