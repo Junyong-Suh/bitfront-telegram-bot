@@ -31,13 +31,15 @@ def main():
 
         if utils.is_o_clock(current_prices):
             # hourly notification
-            notify.to_subscribers(current_prices, last_hourly_prices)
+            footer = "\n[Hourly] Bot " + c.VERSION
+            notify.to_subscribers(current_prices, last_hourly_prices, footer)
             last_hourly_prices = current_prices
 
         # by prices and percent changes
         if threshold.worth_notify(current_prices, last_event_prices):
             # event notification
-            notify.to_premiums(current_prices, last_event_prices)
+            footer = "\n[Event] Bot " + c.VERSION
+            notify.to_premiums(current_prices, last_event_prices, footer)
             last_event_prices = current_prices
 
         # check every min

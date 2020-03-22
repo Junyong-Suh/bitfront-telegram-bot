@@ -4,16 +4,14 @@ from lib import utils, telegram
 
 
 # notify to premium users (a.k.a. event based, i.e., myself lol)
-def to_premiums(current_prices, last_prices):
-    result = compose_result(current_prices, last_prices)
-    msg = result + "\n[Event] Bot " + c.VERSION
+def to_premiums(current_prices, last_prices, footer=""):
+    msg = compose_result(current_prices, last_prices) + footer
     telegram.notify_on_telegram(confidentials.TELEGRAM_IDS_PREMIUM, msg)
 
 
 # notify to all subscribers
-def to_subscribers(current_prices, last_prices):
-    result = compose_result(current_prices, last_prices)
-    msg = result + "\n[Hourly] Bot " + c.VERSION
+def to_subscribers(current_prices, last_prices, footer=""):
+    msg = compose_result(current_prices, last_prices) + footer
     telegram.notify_on_telegram(confidentials.TELEGRAM_IDS_SUBSCRIBER, msg)
 
 
