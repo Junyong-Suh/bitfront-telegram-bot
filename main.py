@@ -3,46 +3,36 @@ import confidentials
 import telegram
 import time
 import logging
+import constants as c
 
 VERSION = "v1.4.5"  # build & docker version - to be automated
 logging.basicConfig(level=logging.INFO)
 
 
-# As a input to time.sleep() in sec
-class PriceCheckInterval:
-    @staticmethod
-    def one_min():
-        return 60  # every min
-
-    @staticmethod
-    def ten_min():
-        return 600  # every 10 min
-
-    @staticmethod
-    def one_hour():
-        return 3600  # every hour
-
-
+# notify to premium users (a.k.a. event based, i.e., myself lol)
 def notify_to_premiums(current_prices, last_prices):
     result = compose_result(current_prices, last_prices)
     msg = "WORK HARD MAKE MONEY\n" + result + "\nBot " + VERSION
     telegram.notify_on_telegram(confidentials.TELEGRAM_IDS_PREMIUM, msg)
 
 
+# notify to all subscribers
 def notify_to_subscribers(current_prices, last_prices):
     result = compose_result(current_prices, last_prices)
     msg = "[Hourly]\n" + result + "\nBot " + VERSION
     telegram.notify_on_telegram(confidentials.TELEGRAM_IDS_SUBSCRIBER, msg)
 
 
+# compose the actual msg to notify
 def compose_result(current_prices, last_prices):
     return "1LN = ${0}\n1BTC = ${1}\n1ETH = ${2}".format(
-        get_pair_result(current_prices, last_prices, 'ln_usd'),
-        get_pair_result(current_prices, last_prices, 'btc_usd'),
-        get_pair_result(current_prices, last_prices, 'eth_usd')
+        get_pair_result(current_prices, last_prices, c.LN_USD),
+        get_pair_result(current_prices, last_prices, c.BTC_USD),
+        get_pair_result(current_prices, last_prices, c.ETH_USD)
     )
 
 
+# return the pair in format with the percent changes
 def get_pair_result(current, last, key):
     percent_point_changed = 0
     if last and 0 < current[key]:
@@ -50,18 +40,22 @@ def get_pair_result(current, last, key):
     return "{0} ({1:.2f}%)".format(current[key], percent_point_changed * 100)
 
 
+# event thresholds for the premium users - i.e., myself :)
 def worth_notify(current_prices):
     # BTC Price Min and Max
-    worth_btc = current_prices['btc_usd'] < 5200  # or 5500 < current_prices['btc_usd']
+    worth_btc = current_prices[c.BTC_USD] < 5200  # or 5500 < current_prices[c.BTC_USD]
     # ETH Price Min and Max
-    worth_eth = current_prices['eth_usd'] < 125  # or 120 < current_prices['eth_usd']
+    worth_eth = current_prices[c.ETH_USD] < 125  # or 120 < current_prices[c.ETH_USD]
     # LN Price Min and Max
-    worth_ln = current_prices['ln_usd'] < 4.5  # or 6 < current_prices['ln_usd']
+    worth_ln = current_prices[c.LN_USD] < 4.5  # or 6 < current_prices[c.LN_USD]
     return worth_btc or worth_eth or worth_ln
 
 
+# current_prices[c.DATETIME_UTC] == datetime.utcnow().isoformat()
+# ex. '2020-03-22T04:15:48.832863'
 def is_o_clock(current_prices):
-    return current_prices['datetime_utc'] == '00'
+    return current_prices[c.DATETIME_UTC] == '00'
+
 
 # ToDos
 # 1. History and Statistics :: % change from the last notification
@@ -95,10 +89,10 @@ def main():
             # event notification
             notify_to_premiums(current_prices, last_event_prices)
             last_event_prices = current_prices
-            time.sleep(PriceCheckInterval.one_min())
+            time.sleep(c.ONE_MIN_IN_SEC)
         else:
             # no notification
-            time.sleep(PriceCheckInterval.ten_min())
+            time.sleep(c.TEN_MIN_IN_SEC)
 
 
 # main

@@ -1,5 +1,6 @@
 from datetime import datetime
 import requests
+import constants as c
 
 
 # get coin pair from bitfront
@@ -14,18 +15,18 @@ def get_coin_pair(ticker1, ticker2):
 # calculate LN-USD from BTC-USD and LN-BTC
 def get_last_prices():
     r = get_coin_pair("ETH", "USD")
-    eth_usd = r['responseData']['last']
+    eth_usd = r[c.KEY_RESPONSE_DATA][c.KEY_LAST]
     r = get_coin_pair("BTC", "USD")
-    btc_usd = r['responseData']['last']
+    btc_usd = r[c.KEY_RESPONSE_DATA][c.KEY_LAST]
     r = get_coin_pair("LN", "BTC")
-    ln_btc = r['responseData']['last']
+    ln_btc = r[c.KEY_RESPONSE_DATA][c.KEY_LAST]
     ln_usd = round(btc_usd * ln_btc, 2)
     utc_now = datetime.utcnow()
     return {
-        "eth_usd": eth_usd,
-        "btc_usd": btc_usd,
-        "ln_btc": ln_btc,
-        "ln_usd": ln_usd,
-        "timestamp_utc": datetime.timestamp(utc_now),
-        "datetime_utc": utc_now.isoformat()
+        c.ETH_USD: eth_usd,
+        c.BTC_USD: btc_usd,
+        c.LN_BTC: ln_btc,
+        c.LN_USD: ln_usd,
+        c.TIMESTAMP_UTC: datetime.timestamp(utc_now),
+        c.DATETIME_UTC: utc_now.isoformat()
     }
