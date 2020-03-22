@@ -4,7 +4,7 @@ import telegram
 import time
 import logging
 
-VERSION = "v1.4.3"  # build & docker version - to be automated
+VERSION = "v1.4.4"  # build & docker version - to be automated
 logging.basicConfig(level=logging.INFO)
 
 
@@ -46,8 +46,8 @@ def compose_result(current_prices, last_prices):
 def get_pair_result(current, last, key):
     percent_point_changed = 0
     if last and 0 < current[key]:
-        percent_point_changed = (last[key] - current[key]) / current[key]
-    return "{0} ({1:+.2f}%)".format(current[key], percent_point_changed * 100)
+        percent_point_changed = (current[key] - last[key]) / current[key]
+    return "{0} ({1:.2f}%)".format(current[key], percent_point_changed * 100)
 
 
 def worth_notify(current_prices):
@@ -56,7 +56,7 @@ def worth_notify(current_prices):
     # ETH Price Min and Max
     worth_eth = current_prices['eth_usd'] < 125  # or 120 < current_prices['eth_usd']
     # LN Price Min and Max
-    worth_ln = current_prices['ln_usd'] < 4.5  # or 6 < current_prices['ln_usd']
+    worth_ln = current_prices['ln_usd'] < 4.5 or 6 < current_prices['ln_usd']
     return worth_btc or worth_eth or worth_ln
 
 
