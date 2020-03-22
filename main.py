@@ -1,11 +1,8 @@
-import bitfront
 import confidentials
-import notification as notify
 import time
 import logging
 import constants as c
-import threshold
-import utils
+from lib import utils, threshold, bitfront, notification as notify
 
 # logging option
 logging.basicConfig(level=logging.INFO)

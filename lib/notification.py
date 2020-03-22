@@ -1,7 +1,6 @@
-import telegram
 import confidentials
 import constants as c
-import utils
+from lib import utils, telegram
 
 
 # notify to premium users (a.k.a. event based, i.e., myself lol)

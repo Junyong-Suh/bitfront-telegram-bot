@@ -1,14 +1,14 @@
 import constants as c
-import utils
+from lib import utils
 
 ABSOLUTE_PERCENT_CHANGE = 10
 
 
 # event thresholds for the premium users - i.e., myself :)
 def worth_notify(current, last):
-    # return worth_downwards(current) or worth_by_changes(current, last)
+    return worth_downwards(current) or worth_by_changes(current, last)
     # return worth_upwards(current) or worth_by_changes(current, last)
-    return worth_downwards(current) or worth_upwards(current) or worth_by_changes(current, last)
+    # return worth_downwards(current) or worth_upwards(current) or worth_by_changes(current, last)
 
 
 # BTC, ETH, LN lower bound
