@@ -11,13 +11,25 @@ logging.basicConfig(level=logging.INFO)
 
 # event thresholds for the premium users - i.e., myself :)
 def worth_notify(current_prices):
-    # BTC Price Min and Max
-    worth_btc = current_prices[c.BTC_USD] < 5200  # or 5500 < current_prices[c.BTC_USD]
-    # ETH Price Min and Max
-    worth_eth = current_prices[c.ETH_USD] < 125  # or 120 < current_prices[c.ETH_USD]
-    # LN Price Min and Max
-    worth_ln = current_prices[c.LN_USD] < 4.5  # or 6 < current_prices[c.LN_USD]
-    return worth_btc or worth_eth or worth_ln
+    # return worth_downwards(current_prices)
+    # return worth_upwards(current_prices)
+    return worth_downwards(current_prices) or worth_upwards(current_prices)
+
+
+# BTC, ETH, LN lower bound
+def worth_downwards(current_prices):
+    btc_by_price = current_prices[c.BTC_USD] < 5200
+    eth_by_price = current_prices[c.ETH_USD] < 125
+    ln_by_price = current_prices[c.LN_USD] < 4.5
+    return btc_by_price or eth_by_price or ln_by_price
+
+
+# BTC, ETH, LN upper bound
+def worth_upwards(current_prices):
+    btc_by_price = 6000 < current_prices[c.BTC_USD]
+    eth_by_price = 200 < current_prices[c.ETH_USD]
+    ln_by_price = 6 < current_prices[c.LN_USD]
+    return btc_by_price or eth_by_price or ln_by_price
 
 
 # current_prices[c.DATETIME_UTC] == datetime.utcnow().isoformat()

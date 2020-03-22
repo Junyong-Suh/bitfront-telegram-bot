@@ -6,29 +6,45 @@ import constants as c
 # notify to premium users (a.k.a. event based, i.e., myself lol)
 def to_premiums(current_prices, last_prices):
     result = compose_result(current_prices, last_prices)
-    msg = "WORK HARD MAKE MONEY\n" + result + "\nBot " + c.VERSION
+    msg = result + "\n[Event] Bot " + c.VERSION
     telegram.notify_on_telegram(confidentials.TELEGRAM_IDS_PREMIUM, msg)
 
 
 # notify to all subscribers
 def to_subscribers(current_prices, last_prices):
     result = compose_result(current_prices, last_prices)
-    msg = "[Hourly]\n" + result + "\nBot " + c.VERSION
+    msg = result + "\n[Hourly] Bot " + c.VERSION
     telegram.notify_on_telegram(confidentials.TELEGRAM_IDS_SUBSCRIBER, msg)
 
 
-# compose the actual msg to notify
-def compose_result(current_prices, last_prices):
-    return "1LN = ${0}\n1BTC = ${1}\n1ETH = ${2}".format(
-        get_pair_result(current_prices, last_prices, c.LN_USD),
-        get_pair_result(current_prices, last_prices, c.BTC_USD),
-        get_pair_result(current_prices, last_prices, c.ETH_USD)
+def compose_result(current, last):
+    result = ""
+    for symbol, v in pairs().items():
+        result = result + get_price_in_format(current, last, symbol, v) + "\n"
+    return result
+
+
+# 1LN = $5.25 (+0.14%)
+# 1{0} = ${1} ({2:.2f}%)
+def get_price_in_format(current, last, symbol, key):
+    return "1{0} = ${1} ({2:.2f}%)".format(
+        symbol,
+        current[key],
+        percent_changed(current, last, key)
     )
 
 
-# return the pair in format with the percent changes
-def get_pair_result(current, last, key):
-    percent_point_changed = 0
+# end of the world if any price becomes zero
+def percent_changed(current, last, key):
+    changed = 0
     if last and 0 < current[key]:
-        percent_point_changed = (current[key] - last[key]) / current[key]
-    return "{0} ({1:.2f}%)".format(current[key], percent_point_changed * 100)
+        changed = (current[key] - last[key]) / current[key]
+    return changed * 100
+
+
+def pairs():
+    return {
+        c.LN: c.LN_USD,
+        c.BTC: c.BTC_USD,
+        c.ETH: c.ETH_USD
+    }
