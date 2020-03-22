@@ -1,6 +1,7 @@
 import telegram
 import confidentials
 import constants as c
+import utils
 
 
 # notify to premium users (a.k.a. event based, i.e., myself lol)
@@ -19,7 +20,7 @@ def to_subscribers(current_prices, last_prices):
 
 def compose_result(current, last):
     result = ""
-    for symbol, v in pairs().items():
+    for symbol, v in c.PAIRS.items():
         result = result + get_price_in_format(current, last, symbol, v) + "\n"
     return result
 
@@ -27,24 +28,8 @@ def compose_result(current, last):
 # 1LN = $5.25 (+0.14%)
 # 1{0} = ${1} ({2:.2f}%)
 def get_price_in_format(current, last, symbol, key):
-    return "1{0} = ${1} ({2:.2f}%)".format(
+    return "1 {0} = ${1} ({2:+.2f}%)".format(
         symbol,
         current[key],
-        percent_changed(current, last, key)
+        utils.percent_changed(current, last, key)
     )
-
-
-# end of the world if any price becomes zero
-def percent_changed(current, last, key):
-    changed = 0
-    if last and 0 < current[key]:
-        changed = (current[key] - last[key]) / current[key]
-    return changed * 100
-
-
-def pairs():
-    return {
-        c.LN: c.LN_USD,
-        c.BTC: c.BTC_USD,
-        c.ETH: c.ETH_USD
-    }
