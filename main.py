@@ -4,7 +4,7 @@ import telegram
 import time
 import logging
 
-VERSION = "v1.4.4"  # build & docker version - to be automated
+VERSION = "v1.4.5"  # build & docker version - to be automated
 logging.basicConfig(level=logging.INFO)
 
 
@@ -23,13 +23,13 @@ class PriceCheckInterval:
         return 3600  # every hour
 
 
-def notify_by_event(current_prices, last_prices):
+def notify_to_premiums(current_prices, last_prices):
     result = compose_result(current_prices, last_prices)
     msg = "WORK HARD MAKE MONEY\n" + result + "\nBot " + VERSION
     telegram.notify_on_telegram(confidentials.TELEGRAM_IDS_PREMIUM, msg)
 
 
-def notify_by_period(current_prices, last_prices):
+def notify_to_subscribers(current_prices, last_prices):
     result = compose_result(current_prices, last_prices)
     msg = "[Hourly]\n" + result + "\nBot " + VERSION
     telegram.notify_on_telegram(confidentials.TELEGRAM_IDS_SUBSCRIBER, msg)
@@ -56,12 +56,12 @@ def worth_notify(current_prices):
     # ETH Price Min and Max
     worth_eth = current_prices['eth_usd'] < 125  # or 120 < current_prices['eth_usd']
     # LN Price Min and Max
-    worth_ln = current_prices['ln_usd'] < 4.5 or 6 < current_prices['ln_usd']
+    worth_ln = current_prices['ln_usd'] < 4.5  # or 6 < current_prices['ln_usd']
     return worth_btc or worth_eth or worth_ln
 
 
-def has_been_an_hour(ts):
-    return PriceCheckInterval.one_hour() < time.time() - ts
+def is_o_clock(current_prices):
+    return current_prices['datetime_utc'] == '00'
 
 # ToDos
 # 1. History and Statistics :: % change from the last notification
@@ -79,7 +79,6 @@ def main():
         return
 
     # initialize
-    last_hourly_notification_ts = time.time()
     last_event_prices = last_hourly_prices = {}
 
     # get the last prices and notify
@@ -87,17 +86,16 @@ def main():
         current_prices = bitfront.get_last_prices()
         logging.info(current_prices)  # log to STDOUT
 
+        if is_o_clock(current_prices):
+            # hourly notification
+            notify_to_subscribers(current_prices, last_hourly_prices)
+            last_hourly_prices = current_prices
+
         if worth_notify(current_prices):
             # event notification
-            notify_by_event(current_prices, last_event_prices)
+            notify_to_premiums(current_prices, last_event_prices)
             last_event_prices = current_prices
             time.sleep(PriceCheckInterval.one_min())
-        elif has_been_an_hour(last_hourly_notification_ts):
-            # hourly notification
-            notify_by_period(current_prices, last_hourly_prices)
-            last_hourly_notification_ts = time.time()
-            last_hourly_prices = current_prices
-            time.sleep(PriceCheckInterval.ten_min())
         else:
             # no notification
             time.sleep(PriceCheckInterval.ten_min())
