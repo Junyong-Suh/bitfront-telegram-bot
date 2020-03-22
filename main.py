@@ -8,13 +8,20 @@ from lib import utils, threshold, bitfront, notification as notify
 logging.basicConfig(level=logging.INFO)
 
 
-# ToDos
-# 1. History and Statistics
-# 2. Add/remove Telegram IDs via the bot
-# 3. Add unit tests
-# 4. Add integration tests
+# appending the footer instead of prepending the header
+# as only top three lines are displayed on the preview
+def get_footer(current, last):
+    footer = "[⏰Hourly⏰]"
+    if threshold.worth_by_ds(current, last):
+        footer = "[🔥떡상🔥]"
+    elif threshold.worth_by_dr(current, last):
+        footer = "[⚠️떡락⚠️]"
+    elif threshold.worth_notify(current, last):
+        footer = "[‼️Event‼️]"
+    return "\n" + footer + " Bot " + c.VERSION
 
 
+# the very main entry
 def main():
     # exit if no receiver
     if not confidentials.TELEGRAM_IDS_SUBSCRIBER:
@@ -31,14 +38,14 @@ def main():
 
         if utils.is_o_clock(current_prices):
             # hourly notification
-            footer = "\n[Hourly] Bot " + c.VERSION
+            footer = get_footer(current_prices, last_event_prices)
             notify.to_subscribers(current_prices, last_hourly_prices, footer)
             last_hourly_prices = current_prices
 
         # by prices and percent changes
         if threshold.worth_notify(current_prices, last_event_prices):
             # event notification
-            footer = "\n[Event] Bot " + c.VERSION
+            footer = get_footer(current_prices, last_event_prices)
             notify.to_premiums(current_prices, last_event_prices, footer)
             last_event_prices = current_prices
 

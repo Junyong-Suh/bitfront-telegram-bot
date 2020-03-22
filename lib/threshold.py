@@ -29,7 +29,22 @@ def worth_upwards(current):
 
 # by absolute percent changes (either + or -)
 def worth_by_changes(current, last):
-    btc_by_change = ABSOLUTE_PERCENT_CHANGE < utils.percent_changed(current, last, c.BTC_USD)
-    eth_by_change = ABSOLUTE_PERCENT_CHANGE < utils.percent_changed(current, last, c.ETH_USD)
-    ln_by_change = ABSOLUTE_PERCENT_CHANGE < utils.percent_changed(current, last, c.LN_USD)
-    return btc_by_change or eth_by_change or ln_by_change
+    return worth_by_ds(current, last) or worth_by_dr(current, last)
+
+
+# ds stands for 떡상 (+)
+def worth_by_ds(current, last):
+    worth = False
+    for v in c.PAIRS.values():
+        changed = utils.percent_changed(current, last, v)
+        worth = worth or ABSOLUTE_PERCENT_CHANGE < changed
+    return worth
+
+
+# dr stands for 떡락 (-)
+def worth_by_dr(current, last):
+    worth = False
+    for v in c.PAIRS.values():
+        changed = utils.percent_changed(current, last, v)
+        worth = worth or changed < -ABSOLUTE_PERCENT_CHANGE
+    return worth

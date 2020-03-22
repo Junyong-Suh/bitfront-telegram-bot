@@ -1,13 +1,10 @@
-VERSION = "v1.4.7"  # build & docker version - to be automated
+VERSION = "v1.4.8"  # build & docker version - to be automated
 
 # bitfront response keys
 KEY_RESPONSE_DATA = 'responseData'
 KEY_LAST = 'last'
 
 # response keys
-LN = 'LN'
-BTC = 'BTC'
-ETH = 'ETH'
 ETH_USD = 'eth_usd'
 BTC_USD = 'btc_usd'
 LN_BTC = 'ln_btc'
@@ -17,9 +14,9 @@ DATETIME_UTC = 'datetime_utc'
 
 # registered coin pairs
 PAIRS = {
-    LN: LN_USD,
-    BTC: BTC_USD,
-    ETH: ETH_USD
+    'LN': LN_USD,
+    'BTC': BTC_USD,
+    'ETH': ETH_USD
 }
 
 # time
