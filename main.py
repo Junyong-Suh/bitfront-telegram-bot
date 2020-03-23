@@ -38,7 +38,7 @@ def main():
 
         if utils.is_o_clock(current_prices):
             # hourly notification
-            footer = get_footer(current_prices, last_event_prices)
+            footer = get_footer(current_prices, last_hourly_prices)
             notify.to_subscribers(current_prices, last_hourly_prices, footer)
             last_hourly_prices = current_prices
 

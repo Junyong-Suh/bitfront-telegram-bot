@@ -1,4 +1,4 @@
-VERSION = "v1.4.9"  # build & docker version - to be automated
+VERSION = "v1.4.10"  # build & docker version - to be automated
 
 # bitfront response keys
 KEY_RESPONSE_DATA = 'responseData'
