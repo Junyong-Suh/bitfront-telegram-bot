@@ -13,8 +13,8 @@ def worth_notify(current, last):
 
 # BTC, ETH, LN lower bound
 def worth_downwards(current):
-    btc_by_price = current[c.BTC_USD] < 5200
-    eth_by_price = current[c.ETH_USD] < 125
+    btc_by_price = current[c.BTC_USD] < 5500
+    eth_by_price = current[c.ETH_USD] < 122
     ln_by_price = current[c.LN_USD] < 4.5
     return btc_by_price or eth_by_price or ln_by_price
 
