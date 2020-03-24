@@ -29,7 +29,7 @@ def main():
         return
 
     # initialize
-    last_event_prices = last_hourly_prices = {'eth_usd': 124.28, 'btc_usd': 5907.35, 'ln_btc': 0.001081, 'ln_usd': 6.39, 'timestamp_utc': 1584894426.848551, 'datetime_utc': '2020-03-23T01:27:06.848551'}
+    last_event_prices = last_hourly_prices = c.INITIAL_PRICES
 
     # get the last prices and notify
     while True:
