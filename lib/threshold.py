@@ -6,45 +6,44 @@ ABSOLUTE_PERCENT_CHANGE = 10
 
 # event thresholds for the premium users - i.e., myself :)
 def worth_notify(current, last):
-    return worth_downwards(current) or worth_by_changes(current, last)
-    # return worth_upwards(current) or worth_by_changes(current, last)
-    # return worth_downwards(current) or worth_upwards(current) or worth_by_changes(current, last)
+    worth = False
+    exchange = current[c.EXCHANGE_NAME]
+    for pair in c.EXCHANGE_PAIRS[exchange].values():
+        # worth = worth or worth_downwards(current, pair) or worth_by_changes(current, last, pair)
+        # worth = worth or worth_upwards(current, pair) or worth_by_changes(current, last, pair)
+        worth = worth or worth_by_values(current, pair) or worth_by_changes(current, last, pair)
+    return worth
 
 
-# BTC, ETH, LN lower bound
-def worth_downwards(current):
-    btc_by_price = current[c.BTC_USD] < 5500
-    eth_by_price = current[c.ETH_USD] < 122
-    ln_by_price = current[c.LN_USD] < 4.5
-    return btc_by_price or eth_by_price or ln_by_price
+# by either upper or lower bounds
+def worth_by_values(current, pair):
+    return worth_downwards(current, pair) or worth_upwards(current, pair)
 
 
-# BTC, ETH, LN upper bound
-def worth_upwards(current):
-    btc_by_price = 6000 < current[c.BTC_USD]
-    eth_by_price = 200 < current[c.ETH_USD]
-    ln_by_price = 6 < current[c.LN_USD]
-    return btc_by_price or eth_by_price or ln_by_price
+# lower bounds
+def worth_downwards(current, pair):
+    lower_bound = c.THRESHOLDS[c.LOWER_BOUND][pair]
+    return current[pair] < lower_bound
+
+
+# upper bounds
+def worth_upwards(current, pair):
+    upper_bound = c.THRESHOLDS[c.UPPER_BOUND][pair]
+    return upper_bound < current[pair]
 
 
 # by absolute percent changes (either + or -)
-def worth_by_changes(current, last):
-    return worth_by_ds(current, last) or worth_by_dr(current, last)
+def worth_by_changes(current, last, pair):
+    return worth_by_ds(current, last, pair) or worth_by_dr(current, last, pair)
 
 
 # ds stands for 떡상 (+)
-def worth_by_ds(current, last):
-    worth = False
-    for v in c.PAIRS.values():
-        changed = utils.percent_changed(current, last, v)
-        worth = worth or ABSOLUTE_PERCENT_CHANGE < changed
-    return worth
+def worth_by_ds(current, last, pair):
+    changed = utils.percent_changed(current, last, pair)
+    return ABSOLUTE_PERCENT_CHANGE < changed
 
 
 # dr stands for 떡락 (-)
-def worth_by_dr(current, last):
-    worth = False
-    for v in c.PAIRS.values():
-        changed = utils.percent_changed(current, last, v)
-        worth = worth or changed < -ABSOLUTE_PERCENT_CHANGE
-    return worth
+def worth_by_dr(current, last, pair):
+    changed = utils.percent_changed(current, last, pair)
+    return changed < -ABSOLUTE_PERCENT_CHANGE

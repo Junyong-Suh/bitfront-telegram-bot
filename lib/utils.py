@@ -1,15 +1,14 @@
-import constants as c
+from datetime import datetime
 
 
-# current_prices[c.DATETIME_UTC] == datetime.utcnow().isoformat()
-# ex. '2020-03-22T04:15:48.832863'
-def is_o_clock(current_prices):
-    return current_prices[c.DATETIME_UTC][14:16] == '00'
+# datetime.utcnow().isoformat() == '2020-03-22T04:15:48.832863'
+def is_o_clock():
+    return datetime.utcnow().isoformat()[14:16] == '00'
 
 
 # end of the world if any price becomes zero
-def percent_changed(current, last, key):
+def percent_changed(current, last, pair):
     changed = 0
-    if last and 0 < current[key]:
-        changed = (current[key] - last[key]) / current[key]
+    if last and 0 < current[pair]:
+        changed = (current[pair] - last[pair]) / current[pair]
     return changed * 100
