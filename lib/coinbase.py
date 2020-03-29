@@ -1,14 +1,21 @@
 from datetime import datetime
 import requests
 import constants as c
+import logging
 
 
 # get coin pair from coinbase
-def get_coin_pair(ticker):
-    r = requests.get(
-        "https://api.coinbase.com/v2/exchange-rates?currency=" + ticker,
-        timeout=1
-    )
+# timeout -> infinite retry
+def get_coin_pair(ticker, timeout=3):
+    try:
+        r = requests.get(
+            "https://api.coinbase.com/v2/exchange-rates?currency=" + ticker,
+            timeout=timeout
+        )
+    except requests.exceptions.ReadTimeout as rtErr:
+        logging.error("ReadTimeout: " + str(rtErr))
+        return get_coin_pair(ticker, timeout+1)
+
     return r.json()
 
 

@@ -1,14 +1,21 @@
 from datetime import datetime
 import requests
 import constants as c
+import logging
 
 
 # get coin pair from gopax
-def get_coin_pair(ticker1, ticker2):
-    r = requests.get(
-        "https://api.gopax.co.kr/trading-pairs/" + ticker1 + "-" + ticker2 + "/ticker",
-        timeout=1
-    )
+# timeout -> infinite retry
+def get_coin_pair(ticker1, ticker2, timeout=3):
+    try:
+        r = requests.get(
+            "https://api.gopax.co.kr/trading-pairs/" + ticker1 + "-" + ticker2 + "/ticker",
+            timeout=timeout
+        )
+    except requests.exceptions.ReadTimeout as rtErr:
+        logging.error("ReadTimeout: " + str(rtErr))
+        return get_coin_pair(ticker1, ticker2, timeout+1)
+
     return r.json()
 
 
