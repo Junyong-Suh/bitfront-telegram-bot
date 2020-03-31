@@ -9,9 +9,9 @@ def worth_notify(current, last):
     worth = False
     exchange = current[c.EXCHANGE_NAME]
     for pair in c.EXCHANGE_PAIRS[exchange].values():
-        # worth = worth or worth_downwards(current, pair) or worth_by_changes(current, last, pair)
+        worth = worth or worth_downwards(current, pair) or worth_by_changes(current, last, pair)
         # worth = worth or worth_upwards(current, pair) or worth_by_changes(current, last, pair)
-        worth = worth or worth_by_values(current, pair) or worth_by_changes(current, last, pair)
+        # worth = worth or worth_by_values(current, pair) or worth_by_changes(current, last, pair)
     return worth
 
 
