@@ -6,7 +6,7 @@ import logging
 
 # get coin pair from coinbase
 # timeout -> infinite retry
-def get_coin_pair(ticker, timeout=3):
+def get_coin_pair(ticker, timeout=3, is_retry=False):
     try:
         r = requests.get(
             "https://api.coinbase.com/v2/exchange-rates?currency=" + ticker,
@@ -14,7 +14,10 @@ def get_coin_pair(ticker, timeout=3):
         )
     except requests.exceptions.ReadTimeout as rtErr:
         logging.error("ReadTimeout: " + str(rtErr))
-        return get_coin_pair(ticker, timeout+1)
+        return get_coin_pair(ticker, timeout+1, True)
+
+    if is_retry:
+        logging.warning(r)  # log the response if retry
 
     return r.json()
 
