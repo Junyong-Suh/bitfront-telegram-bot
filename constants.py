@@ -1,5 +1,5 @@
 # build & docker version - to be automated
-VERSION = "v1.5.2"
+VERSION = "v1.5.3"
 
 # last prices from the previous run - to be automated
 INITIAL_PRICES = {'bitfront': {'eth_usd': 131.73, 'btc_usd': 6435, 'ln_btc': 0.00122999, 'ln_usd': 7.91, 'timestamp_utc': 1585600164.559508, 'datetime_utc': '2020-03-31T05:29:24.559508', 'exchange_name': 'bitfront'}, 'coinbase': {'btc_usd': 6413.365, 'btc_krw': 7820874.149725, 'eth_usd': 131.52, 'eth_krw': 160384.0368, 'timestamp_utc': 1585600164.760461, 'datetime_utc': '2020-03-31T05:29:24.760461', 'exchange_name': 'coinbase'}, 'gopax': {'btc_krw': 7815000, 'eth_krw': 160000, 'timestamp_utc': 1585600164.98631, 'datetime_utc': '2020-03-31T05:29:24.986310', 'exchange_name': 'gopax'}, 'upbit': {'btc_krw': 7823000.0, 'eth_krw': 160150.0, 'timestamp_utc': 1585600165.154777, 'datetime_utc': '2020-03-31T05:29:25.154777', 'exchange_name': 'upbit'}}
@@ -90,3 +90,11 @@ ONE_MIN_IN_SEC = 60
 # notification footer types
 EVENT = "EVENT"
 HOURLY = "HOURLY"
+
+# error responses
+ERROR_RESPONSE = {
+    BITFRONT: {KEY_RESPONSE_DATA: {KEY_LAST: 0}},
+    COINBASE: {KEY_DATA: {KEY_RATES: {USD: 0, KRW: 0}}},
+    GOPAX: {KEY_PRICE: 0},
+    UPBIT: [{KEY_TRADE_PRICE: 0}]
+}

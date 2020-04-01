@@ -12,11 +12,17 @@ def get_coin_pair(ticker1, ticker2, timeout=3):
             "https://api.gopax.co.kr/trading-pairs/" + ticker1 + "-" + ticker2 + "/ticker",
             timeout=timeout
         )
-    except requests.exceptions.ReadTimeout as rtErr:
-        logging.error("ReadTimeout: " + str(rtErr))
-        return get_coin_pair(ticker1, ticker2, timeout+1)
-
-    return r.json()
+        r.raise_for_status()
+        return r.json()
+    except requests.exceptions.HTTPError as e:
+        logging.error(e)
+    except requests.exceptions.ConnectionError as e:
+        logging.error(e)
+    except requests.exceptions.Timeout as e:
+        logging.error(e)
+    except requests.exceptions.RequestException as e:
+        logging.error(e)
+    return c.ERROR_RESPONSE[c.GOPAX]
 
 
 # Get last prices of KRW-BTC, KRW-ETH from gopax
