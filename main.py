@@ -17,12 +17,6 @@ def get_footer(current, notification_type):
     return "[" + notification_type.upper() + "] on " + exchange + "\nBot " + c.VERSION
 
 
-# update if no error
-def update_last_price(current, last, exchange):
-    if current[exchange] is not c.ERROR_RESPONSE[exchange]:
-        last[exchange] = current[exchange]
-
-
 # ToDo: make the calls concurrent
 def all_exchanges():
     return {
@@ -53,18 +47,22 @@ def main(argv):
 
         # from Bitfront, Coinbase, GoPax and Upbit
         for _, exchange in enumerate(c.EXCHANGE_PAIRS.keys()):
+            # skip if the exchange response is error
+            if current_prices[exchange] is c.ERROR_RESPONSE[exchange]:
+                continue
+
             if utils.is_o_clock():
                 # hourly notification
                 footer = get_footer(current_prices[exchange], c.HOURLY)
                 notify.to_subscribers(current_prices[exchange], last_hourly_prices[exchange], footer)
-                update_last_price(current_prices, last_hourly_prices, exchange)
+                last_hourly_prices[exchange] = current_prices[last_hourly_prices]
 
             # by prices and percent changes
             if threshold.worth_notify(current_prices[exchange], last_event_prices[exchange]):
                 # event notification
                 footer = get_footer(current_prices[exchange], c.EVENT)
                 notify.to_premiums(current_prices[exchange], last_event_prices[exchange], footer)
-                update_last_price(current_prices, last_event_prices, exchange)
+                last_event_prices[exchange] = current_prices[last_event_prices]
 
         # check every min
         time.sleep(c.ONE_MIN_IN_SEC)
