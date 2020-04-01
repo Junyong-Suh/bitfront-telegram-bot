@@ -55,14 +55,14 @@ def main(argv):
                 # hourly notification
                 footer = get_footer(current_prices[exchange], c.HOURLY)
                 notify.to_subscribers(current_prices[exchange], last_hourly_prices[exchange], footer)
-                last_hourly_prices[exchange] = current_prices[last_hourly_prices]
+                last_hourly_prices[exchange] = current_prices[exchange]
 
             # by prices and percent changes
             if threshold.worth_notify(current_prices[exchange], last_event_prices[exchange]):
                 # event notification
                 footer = get_footer(current_prices[exchange], c.EVENT)
                 notify.to_premiums(current_prices[exchange], last_event_prices[exchange], footer)
-                last_event_prices[exchange] = current_prices[last_event_prices]
+                last_event_prices[exchange] = current_prices[exchange]
 
         # check every min
         time.sleep(c.ONE_MIN_IN_SEC)

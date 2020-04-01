@@ -1,8 +1,8 @@
 # build & docker version - to be automated
-VERSION = "v1.5.4"
+VERSION = "v1.5.5"
 
 # last prices from the previous run - to be automated
-INITIAL_PRICES = {'bitfront': {'eth_usd': 131.53, 'btc_usd': 6234.71, 'ln_btc': 0.00115361, 'ln_usd': 7.19, 'timestamp_utc': 1585746731.590346, 'datetime_utc': '2020-04-01T13:12:11.590346', 'exchange_name': 'bitfront'}, 'coinbase': {'btc_usd': 6239.035, 'btc_krw': 7689860.1989, 'eth_usd': 131.555, 'eth_krw': 162146.7997, 'timestamp_utc': 1585746731.68285, 'datetime_utc': '2020-04-01T13:12:11.682850', 'exchange_name': 'coinbase'}, 'gopax': {'btc_krw': 7588000, 'eth_krw': 160300, 'timestamp_utc': 1585746733.068201, 'datetime_utc': '2020-04-01T13:12:13.068201', 'exchange_name': 'gopax'}, 'upbit': {'btc_krw': 7585000.0, 'eth_krw': 159950.0, 'timestamp_utc': 1585746734.246833, 'datetime_utc': '2020-04-01T13:12:14.246833', 'exchange_name': 'upbit'}}
+INITIAL_PRICES = {'bitfront': {'eth_usd': 130.68, 'btc_usd': 6203.98, 'ln_btc': 0.00124888, 'ln_usd': 7.75, 'timestamp_utc': 1585748363.642338, 'datetime_utc': '2020-04-01T13:39:23.642338', 'exchange_name': 'bitfront'}, 'coinbase': {'btc_usd': 6200.315, 'btc_krw': 7643128.3005, 'eth_usd': 0.0, 'eth_krw': 0.0, 'timestamp_utc': 1585748366.708918, 'datetime_utc': '2020-04-01T13:39:26.708918', 'exchange_name': 'coinbase'}, 'gopax': {'btc_krw': 7550000, 'eth_krw': 159200, 'timestamp_utc': 1585748367.94154, 'datetime_utc': '2020-04-01T13:39:27.941540', 'exchange_name': 'gopax'}, 'upbit': {'btc_krw': 7557000.0, 'eth_krw': 159550.0, 'timestamp_utc': 1585748369.105291, 'datetime_utc': '2020-04-01T13:39:29.105291', 'exchange_name': 'upbit'}}
 
 # symbols and currencies
 BTC = 'BTC'
