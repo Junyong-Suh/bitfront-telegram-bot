@@ -2,31 +2,31 @@
 VERSION = "v1.5.6"
 
 # last prices from the previous run - to be automated
-INITIAL_PRICES = {'bitfront': {'eth_usd': 144.64, 'btc_usd': 6933.5, 'ln_btc': 0.00140998, 'ln_usd': 9.78, 'timestamp_utc': 1585886890.689321, 'datetime_utc': '2020-04-03T13:08:10.689321', 'exchange_name': 'bitfront'}, 'coinbase': {'btc_usd': 6938.705, 'btc_krw': 8588035.1785, 'eth_usd': 144.97, 'eth_krw': 179429.369, 'timestamp_utc': 1585886890.86688, 'datetime_utc': '2020-04-03T13:08:10.866880', 'exchange_name': 'coinbase'}, 'gopax': {'btc_krw': 8329000, 'eth_krw': 173300, 'timestamp_utc': 1585886891.078807, 'datetime_utc': '2020-04-03T13:08:11.078807', 'exchange_name': 'gopax'}, 'upbit': {'btc_krw': 8320000.0, 'eth_krw': 173500.0, 'timestamp_utc': 1585886891.23583, 'datetime_utc': '2020-04-03T13:08:11.235830', 'exchange_name': 'upbit'}}
+INITIAL_PRICES = {'bitfront': {'eth_usd': 144.15, 'btc_usd': 6880.39, 'ln_btc': 0.00140998, 'ln_usd': 9.7, 'timestamp_utc': 1585889855.381443, 'datetime_utc': '2020-04-03T13:57:35.381443', 'exchange_name': 'bitfront'}, 'coinbase': {'btc_usd': 6890.055, 'btc_krw': 8524720.54875, 'eth_usd': 144.025, 'eth_krw': 178194.93125, 'timestamp_utc': 1585889855.998378, 'datetime_utc': '2020-04-03T13:57:35.998378', 'exchange_name': 'coinbase'}, 'gopax': {'btc_krw': 8272000, 'eth_krw': 173000, 'timestamp_utc': 1585889856.225254, 'datetime_utc': '2020-04-03T13:57:36.225254', 'exchange_name': 'gopax'}, 'upbit': {'btc_krw': 8273000.0, 'eth_krw': 172700.0, 'timestamp_utc': 1585889856.400983, 'datetime_utc': '2020-04-03T13:57:36.400983', 'exchange_name': 'upbit'}}
 
 # symbols and currencies
-BTC = 'BTC'
-ETH = 'ETH'
-LN = 'LN'
-KRW = 'KRW'
-USD = 'USD'
+BTC = "BTC"
+ETH = "ETH"
+LN = "LN"
+KRW = "KRW"
+USD = "USD"
 
 # exchanges
-EXCHANGE_NAME = 'exchange_name'
-BITFRONT = 'bitfront'
-COINBASE = 'coinbase'
-GOPAX = 'gopax'
-UPBIT = 'upbit'
+EXCHANGE_NAME = "exchange_name"
+BITFRONT = "bitfront"
+COINBASE = "coinbase"
+GOPAX = "gopax"
+UPBIT = "upbit"
 
 # response keys
-BTC_USD = 'btc_usd'
-BTC_KRW = 'btc_krw'
-ETH_USD = 'eth_usd'
-ETH_KRW = 'eth_krw'
-LN_BTC = 'ln_btc'
-LN_USD = 'ln_usd'
-TIMESTAMP_UTC = 'timestamp_utc'
-DATETIME_UTC = 'datetime_utc'
+BTC_USD = "btc_usd"
+BTC_KRW = "btc_krw"
+ETH_USD = "eth_usd"
+ETH_KRW = "eth_krw"
+LN_BTC = "ln_btc"
+LN_USD = "ln_usd"
+TIMESTAMP_UTC = "timestamp_utc"
+DATETIME_UTC = "datetime_utc"
 
 # registered coin pairs in exchanges
 # coinbase supports both KRW and USD but USD only for now
@@ -50,8 +50,8 @@ EXCHANGE_PAIRS = {
     }
 }
 
-UPPER_BOUND = 'upper'
-LOWER_BOUND = 'lower'
+UPPER_BOUND = "upper"
+LOWER_BOUND = "lower"
 USD_KRW_EXCHANGE_RATE = 1200
 THRESHOLDS = {
     UPPER_BOUND: {
@@ -71,18 +71,18 @@ THRESHOLDS = {
 }
 
 # bitfront response keys
-KEY_RESPONSE_DATA = 'responseData'
-KEY_LAST = 'last'
+KEY_RESPONSE_DATA = "responseData"
+KEY_LAST = "last"
 
 # gopax response keys
-KEY_PRICE = 'price'
+KEY_PRICE = "price"
 
 # coinbase response keys
-KEY_DATA = 'data'
-KEY_RATES = 'rates'
+KEY_DATA = "data"
+KEY_RATES = "rates"
 
 # upbit response keys
-KEY_TRADE_PRICE = 'trade_price'
+KEY_TRADE_PRICE = "trade_price"
 
 # time
 ONE_MIN_IN_SEC = 60
@@ -98,3 +98,9 @@ ERROR_RESPONSE = {
     GOPAX: {KEY_PRICE: 0},
     UPBIT: [{KEY_TRADE_PRICE: 0}]
 }
+
+# ElasticSearch
+ES_INDEX_LOGS = "logs"
+
+# The domain with https:// and trailing slash. For example, https://my-test-domain.us-east-1.es.amazonaws.com/
+ES_HOST = "https://search-bitfront-telegram-bot-bm2tdula3ijlvjsxgfafe7ab5a.us-west-1.es.amazonaws.com/"

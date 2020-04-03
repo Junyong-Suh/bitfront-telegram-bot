@@ -1,6 +1,5 @@
 *__pycache__*
 *.pyc
 .idea/
-logger/
 confidentials.py
 _config.yml

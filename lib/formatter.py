@@ -23,10 +23,10 @@ def get_result(current, last):
 # 1LN = $5.25 (+0.14%)
 # 1{0} = ${1} ({2:.2f}%)
 def get_price_in_format(current, last, coin_symbol, key):
-    currency_symbol = '$'
+    currency_symbol = "$"
     str_format = "1 {0} = {1}{2:,.2f} ({3:+.2f}%)"
     if "krw" in key:
-        currency_symbol = '₩'
+        currency_symbol = "₩"
         str_format = "1 {0} = {1}{2:,.0f} ({3:+.2f}%)"
 
     return str_format.format(

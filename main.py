@@ -3,7 +3,7 @@ import time
 import logging
 import constants as c
 import sys
-from lib import utils, threshold
+from lib import utils, threshold, elasticsearch as es
 from lib import formatter as f, notification as notify
 from lib import bitfront, upbit, coinbase, gopax
 
@@ -53,7 +53,7 @@ def all_exchanges():
 def main(argv, is_local=True):
     # exit if no receiver
     if not confidentials.TELEGRAM_IDS_SUBSCRIBER:
-        logging.error('No Telegram IDs to notify - Set your confidentials.py (Read README.md)')
+        logging.error("No Telegram IDs to notify - Set your confidentials.py (Read README.md)")
         return
 
     # initialize
@@ -64,6 +64,7 @@ def main(argv, is_local=True):
         is_hourly = utils.is_o_clock()
         current_prices = all_exchanges()
         logging.info(current_prices)
+        es.to_es(c.ES_INDEX_LOGS, current_prices)
 
         msg, last_prices, has_events_to_notify = voila(current_prices, last_prices, is_hourly)
         if is_hourly:
@@ -72,9 +73,6 @@ def main(argv, is_local=True):
         elif has_events_to_notify:
             # by prices and percent changes
             notify.to_premiums(msg)
-        elif is_local:
-            # testing
-            notify.to_premiums("[TEST]\n" + msg)
 
         # check every min
         time.sleep(c.ONE_MIN_IN_SEC)
