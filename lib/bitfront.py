@@ -5,7 +5,6 @@ import logging
 
 
 # get coin pair from bitfront
-# timeout -> infinite retry
 def get_coin_pair(ticker1, ticker2, timeout=3):
     try:
         r = requests.get(

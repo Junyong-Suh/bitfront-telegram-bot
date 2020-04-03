@@ -5,8 +5,7 @@ import logging
 
 
 # get coin pair from coinbase
-# timeout -> infinite retry
-def get_coin_pair(ticker, timeout=3):
+def get_coin_pair(ticker, timeout=5):
     try:
         r = requests.get(
             "https://api.coinbase.com/v2/exchange-rates?currency=" + ticker,
