@@ -14,13 +14,13 @@ def get_coin_pair(ticker1, ticker2, timeout=3):
         r.raise_for_status()
         return r.json()
     except requests.exceptions.HTTPError as e:
-        logger.error(e)
+        logger.error(str(e))
     except requests.exceptions.ConnectionError as e:
-        logger.error(e)
+        logger.error(str(e))
     except requests.exceptions.Timeout as e:
-        logger.error(e)
+        logger.error(str(e))
     except requests.exceptions.RequestException as e:
-        logger.error(e)
+        logger.error(str(e))
     return c.ERROR_RESPONSE[c.GOPAX]
 
 
