@@ -1,5 +1,5 @@
 # build & docker version - to be automated
-VERSION = "v1.5.6"
+VERSION = "v1.5.8"
 
 # last prices from the previous run - to be automated
 INITIAL_PRICES = {'bitfront': {'eth_usd': 144.15, 'btc_usd': 6880.39, 'ln_btc': 0.00140998, 'ln_usd': 9.7, 'timestamp_utc': 1585889855.381443, 'datetime_utc': '2020-04-03T13:57:35.381443', 'exchange_name': 'bitfront'}, 'coinbase': {'btc_usd': 6890.055, 'btc_krw': 8524720.54875, 'eth_usd': 144.025, 'eth_krw': 178194.93125, 'timestamp_utc': 1585889855.998378, 'datetime_utc': '2020-04-03T13:57:35.998378', 'exchange_name': 'coinbase'}, 'gopax': {'btc_krw': 8272000, 'eth_krw': 173000, 'timestamp_utc': 1585889856.225254, 'datetime_utc': '2020-04-03T13:57:36.225254', 'exchange_name': 'gopax'}, 'upbit': {'btc_krw': 8273000.0, 'eth_krw': 172700.0, 'timestamp_utc': 1585889856.400983, 'datetime_utc': '2020-04-03T13:57:36.400983', 'exchange_name': 'upbit'}}
@@ -99,8 +99,16 @@ ERROR_RESPONSE = {
     UPBIT: [{KEY_TRADE_PRICE: 0}]
 }
 
+# log level
+LOG_DEBUG = "debug"
+LOG_INFO = "info"
+LOG_WARNING = "warning"
+LOG_ERROR = "error"
+
 # ElasticSearch
 ES_INDEX_LOGS = "logs"
+ES_LOG_LEVEL = "level"
+ES_MSG = "msg"
 
 # The domain with https:// and trailing slash. For example, https://my-test-domain.us-east-1.es.amazonaws.com/
 ES_HOST = "https://search-bitfront-telegram-bot-bm2tdula3ijlvjsxgfafe7ab5a.us-west-1.es.amazonaws.com/"

@@ -1,14 +1,10 @@
 import confidentials
 import time
-import logging
 import constants as c
 import sys
-from lib import utils, threshold, elasticsearch as es
+from lib import logger, utils, threshold, elasticsearch as es
 from lib import formatter as f, notification as notify
 from lib import bitfront, upbit, coinbase, gopax
-
-# logging option
-logging.basicConfig(level=logging.INFO)
 
 
 def voila(current_prices, last_prices, is_hourly):
@@ -53,7 +49,7 @@ def all_exchanges():
 def main(argv, is_local=True):
     # exit if no receiver
     if not confidentials.TELEGRAM_IDS_SUBSCRIBER:
-        logging.error("No Telegram IDs to notify - Set your confidentials.py (Read README.md)")
+        logger.error("No Telegram IDs to notify - Set your confidentials.py (Read README.md)")
         return
 
     # initialize
@@ -63,8 +59,7 @@ def main(argv, is_local=True):
     while True:
         is_hourly = utils.is_o_clock()
         current_prices = all_exchanges()
-        logging.info(current_prices)
-        es.to_es(c.ES_INDEX_LOGS, current_prices)
+        logger.info(current_prices)
 
         msg, last_prices, has_events_to_notify = voila(current_prices, last_prices, is_hourly)
         if is_hourly:

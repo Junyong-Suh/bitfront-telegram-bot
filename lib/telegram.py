@@ -1,6 +1,6 @@
 import requests
 import confidentials
-import logging
+from lib import logger
 
 
 # the bot info
@@ -21,4 +21,4 @@ def notify_telegram(bot_id, chat_id, msg):
         url="https://api.telegram.org/bot" + bot_id + "/sendMessage",
         json={"chat_id": chat_id, "text": msg}
     )
-    logging.info(r.json())
+    logger.info(r.json())

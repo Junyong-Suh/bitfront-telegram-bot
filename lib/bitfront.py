@@ -1,7 +1,7 @@
 from datetime import datetime
 import requests
 import constants as c
-import logging
+from lib import logger
 
 
 # get coin pair from bitfront
@@ -14,13 +14,13 @@ def get_coin_pair(ticker1, ticker2, timeout=3):
         r.raise_for_status()
         return r.json()
     except requests.exceptions.HTTPError as e:
-        logging.error(e)
+        logger.error(e)
     except requests.exceptions.ConnectionError as e:
-        logging.error(e)
+        logger.error(e)
     except requests.exceptions.Timeout as e:
-        logging.error(e)
+        logger.error(e)
     except requests.exceptions.RequestException as e:
-        logging.error(e)
+        logger.error(e)
     return c.ERROR_RESPONSE[c.BITFRONT]
 
 
