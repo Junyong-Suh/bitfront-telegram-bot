@@ -1,8 +1,8 @@
 # build & docker version - to be automated
-VERSION = "v1.5.8"
+VERSION = "v1.5.9"
 
 # last prices from the previous run - to be automated
-INITIAL_PRICES = {'bitfront': {'eth_usd': 141.21, 'btc_usd': 6712.96, 'ln_btc': 0.00140989, 'ln_usd': 9.46, 'timestamp_utc': 1585895762.019413, 'datetime_utc': '2020-04-03T15:36:02.019413', 'exchange_name': 'bitfront'}, 'coinbase': {'btc_usd': 6764.365, 'btc_krw': 8384700.9921, 'eth_usd': 141.68, 'eth_krw': 175618.0272, 'timestamp_utc': 1585895762.227134, 'datetime_utc': '2020-04-03T15:36:02.227134', 'exchange_name': 'coinbase'}, 'gopax': {'btc_krw': 8117000, 'eth_krw': 170400, 'timestamp_utc': 1585895762.42017, 'datetime_utc': '2020-04-03T15:36:02.420170', 'exchange_name': 'gopax'}, 'upbit': {'btc_krw': 8119000.0, 'eth_krw': 170900.0, 'timestamp_utc': 1585895762.596228, 'datetime_utc': '2020-04-03T15:36:02.596228', 'exchange_name': 'upbit'}}
+INITIAL_PRICES = {'bitfront': {'eth_usd': 140.92, 'btc_usd': 6709, 'ln_btc': 0.00137999, 'ln_usd': 9.26, 'timestamp_utc': 1585971038.389129, 'datetime_utc': '2020-04-04T12:30:38.389129', 'exchange_name': 'bitfront'}, 'coinbase': {'btc_usd': 6723.605, 'btc_krw': 8315788.282025, 'eth_usd': 141.225, 'eth_krw': 174667.786125, 'timestamp_utc': 1585971039.114268, 'datetime_utc': '2020-04-04T12:30:39.114268', 'exchange_name': 'coinbase'}, 'gopax': {'btc_krw': 8145000, 'eth_krw': 171100, 'timestamp_utc': 1585971039.338717, 'datetime_utc': '2020-04-04T12:30:39.338717', 'exchange_name': 'gopax'}, 'upbit': {'btc_krw': 8145000.0, 'eth_krw': 170900.0, 'timestamp_utc': 1585971039.500736, 'datetime_utc': '2020-04-04T12:30:39.500736', 'exchange_name': 'upbit'}}
 
 # symbols and currencies
 BTC = "BTC"
@@ -109,6 +109,7 @@ LOG_ERROR = "error"
 ES_INDEX_LOGS = "logs"
 ES_LOG_LEVEL = "level"
 ES_MSG = "msg"
+ES_LOG = "log"
 
 # The domain with https:// and trailing slash. For example, https://my-test-domain.us-east-1.es.amazonaws.com/
 ES_HOST = "https://search-bitfront-telegram-bot-bm2tdula3ijlvjsxgfafe7ab5a.us-west-1.es.amazonaws.com/"
