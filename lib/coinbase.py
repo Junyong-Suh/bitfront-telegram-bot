@@ -34,7 +34,7 @@ def get_last_prices():
 
     # if either request is failed, mark both as failed to skip Coinbase
     # Coinbase API fails too often + retry fails too
-    if btc_rates is 0 or eth_rates is 0:
+    if btc_rates == 0 or eth_rates == 0:
         btc_rates = eth_rates = 0
 
     # coinbase rates are returned in string so covert to float
