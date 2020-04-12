@@ -1,22 +1,20 @@
 import confidentials
 import time
 import constants as c
+import logging
 import sys
-from lib import logger, utils, threshold, elasticsearch as es
+from lib import logger, utils, threshold
 from lib import formatter as f, notification as notify
 from lib import bitfront, upbit, coinbase, gopax
 
 
+# sorry for the function name ;)
 def voila(current_prices, last_prices, is_hourly):
     msg = ""
     has_events_to_notify = False
 
     # Bitfront, Coinbase, GoPax and Upbit
     for _, exchange in enumerate(c.EXCHANGE_PAIRS.keys()):
-        # skip if the exchange response is error
-        if current_prices[exchange] is c.ERROR_RESPONSE[exchange]:
-            continue
-
         # compose the msg and update the last price
         if is_hourly:
             msg = msg + f.compose_msg(current_prices[exchange], last_prices[c.HOURLY][exchange])
@@ -53,7 +51,7 @@ def main(argv, is_local=True):
         return
 
     # initialize
-    last_prices = {c.HOURLY: c.INITIAL_PRICES, c.EVENT: c.INITIAL_PRICES}
+    last_prices = {c.HOURLY: all_exchanges(), c.EVENT: all_exchanges()}
 
     # get the last prices and notify
     while True:
@@ -76,7 +74,9 @@ def main(argv, is_local=True):
 # main
 if __name__ == "__main__":
     if 1 < len(sys.argv) and sys.argv[1] == "production":
+        logging.basicConfig(level=logging.INFO)
         main(sys.argv[2:], False)  # prod
     else:
+        logging.basicConfig(level=logging.DEBUG)
         main(sys.argv[2:], True)   # local
 

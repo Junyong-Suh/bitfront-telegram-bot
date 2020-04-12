@@ -20,10 +20,10 @@ def worth_by_values(current, pair):
     return worth_downwards(current, pair) or worth_upwards(current, pair)
 
 
-# lower bounds
+# lower bounds, but not zero (error or end of the world)
 def worth_downwards(current, pair):
     lower_bound = c.THRESHOLDS[c.LOWER_BOUND][pair]
-    return current[pair] < lower_bound
+    return 0 < current[pair] < lower_bound
 
 
 # upper bounds

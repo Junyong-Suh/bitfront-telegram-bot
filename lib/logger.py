@@ -3,9 +3,6 @@ from datetime import datetime
 import constants as c
 from lib import elasticsearch as es
 
-# logging option
-logging.basicConfig(level=logging.INFO)
-
 
 # debug only goes to STDOUT
 def debug(msg):
