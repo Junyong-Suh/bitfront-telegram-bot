@@ -37,13 +37,13 @@ def worth_by_changes(current, last, pair):
     return worth_by_ds(current, last, pair) or worth_by_dr(current, last, pair)
 
 
-# ds stands for 떡상 (+)
+# ds stands for 떡상 (+), exact 100% change is considered an error (from zero values)
 def worth_by_ds(current, last, pair):
     changed = utils.percent_changed(current, last, pair)
-    return ABSOLUTE_PERCENT_CHANGE < changed
+    return ABSOLUTE_PERCENT_CHANGE < changed != 100
 
 
-# dr stands for 떡락 (-)
+# dr stands for 떡락 (-), exact -100% change is considered an error (from zero values)
 def worth_by_dr(current, last, pair):
     changed = utils.percent_changed(current, last, pair)
-    return changed < -ABSOLUTE_PERCENT_CHANGE
+    return -100 != changed < -ABSOLUTE_PERCENT_CHANGE

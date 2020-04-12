@@ -1,5 +1,5 @@
 # build & docker version - to be automated
-VERSION = "v1.5.11"
+VERSION = "v1.5.12"
 
 # symbols and currencies
 BTC = "BTC"
