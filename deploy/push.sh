@@ -1,5 +1,9 @@
 #!/bin/sh
 
+CYAN='\033[0;36m'
+GREEN='\033[0;32m'
+NC='\033[0m' # No Color
+
 NEW_TAG=$1
 CC_TYPE=$2 # fix, feat, chore, test, docs, ...
 COMMIT_MSG=$3
@@ -8,17 +12,19 @@ DOCKER_HUB="zechery/bitfront-price-alert"
 NEW_IMAGE="$DOCKER_HUB:$NEW_TAG"
 
 # commit
-echo -e "Commit and push to Git '$CC_TYPE: $COMMIT_MSG'\n"
+printf "${CYAN}Commit and push to Git '$CC_TYPE: $COMMIT_MSG'${NC}\n"
 git commit -am "$CC_TYPE: $COMMIT_MSG"
 git push origin master
 
 # tag
-echo -e "Add and push a tag $NEW_TAG: $COMMIT_MSG\n"
+printf "${CYAN}Add and push a tag $NEW_TAG: $COMMIT_MSG${NC}\n"
 git tag -a "$NEW_TAG" -m "$NEW_TAG: $COMMIT_MSG"
 git push origin "$NEW_TAG"
 
 # docker build & push
-echo -e "Build new Docker image $NEW_IMAGE\n"
+printf "${CYAN}Build new Docker image $NEW_IMAGE${NC}\n"
 docker build -t "$NEW_IMAGE" .
-echo -e "Push new Docker image $NEW_IMAGE\n"
+printf "${CYAN}Push new Docker image $NEW_IMAGE${NC}\n"
 docker push "$NEW_IMAGE"
+
+printf "${GREEN}Completed successfully${NC}\n"

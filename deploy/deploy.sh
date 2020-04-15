@@ -1,33 +1,37 @@
 #!/bin/sh
 
+CYAN='\033[0;36m'
+GREEN='\033[0;32m'
+NC='\033[0m' # No Color
+
 # validate if both git and docker have the same tag
 LAST_TAG=$(./get_last_tag.sh) # execute and capture stdout
 STATUS=$? # find out exit status
 if [ $STATUS -eq 0 ]; then
-  echo "Current Git and Docker tag: $LAST_TAG"
+  printf "${CYAN}Current Git and Docker tag: %s${NC}" "$LAST_TAG"
 else
-  echo "$LAST_TAG"
+  printf "%s" "$LAST_TAG"
   exit 1
 fi
 
 # start deploying
 DOCKER_HUB="zechery/bitfront-price-alert"
 NEW_IMAGE="$DOCKER_HUB:$LAST_TAG"
-echo "Deploy $NEW_IMAGE"
+printf "${CYAN}Deploy %s${NC}" "$NEW_IMAGE"
 
 # stop and remove current containers
-echo "Stop all running containers:"
+printf "${CYAN}Stop all running containers:${NC}"
 docker stop "$(docker ps -aq)"
-echo "Remove all containers:"
+printf "${CYAN}Remove all containers:${NC}"
 docker rm "$(docker ps -aq)"
 
 # pull and run the new image
-echo "Run $NEW_IMAGE:"
+printf "${CYAN}Run $NEW_IMAGE:${NC}"
 docker run -d "$NEW_IMAGE"
 
 # done deploying, display images and containers
-echo "Docker images:"
+printf "${CYAN}Docker images:${NC}"
 docker images
-echo "Docker containers:"
+printf "${CYAN}Docker containers:${NC}"
 docker ps
-echo "Deployed $NEW_IMAGE"
+printf "${GREEN}Deployed %s${NC}" "$NEW_IMAGE"
