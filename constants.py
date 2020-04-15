@@ -1,5 +1,6 @@
 # build & docker version - to be automated
-VERSION = "v1.5.16"
+VERSION = "v1.5.18"
+KEY_VERSION = "version"
 
 # symbols and currencies
 BTC = "BTC"
@@ -49,7 +50,7 @@ EXCHANGE_PAIRS = {
 
 UPPER_BOUND = "upper"
 LOWER_BOUND = "lower"
-USD_KRW_EXCHANGE_RATE = 1200
+USD_KRW_EXCHANGE_RATE = 1215
 THRESHOLDS = {
     UPPER_BOUND: {
         BTC_USD: 7000,

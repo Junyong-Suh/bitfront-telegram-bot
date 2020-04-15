@@ -30,6 +30,7 @@ def to_es(msg, level=c.LOG_INFO):
     payload = {
         c.ES_LOG_LEVEL: level,
         c.ES_MSG: msg,
+        c.KEY_VERSION: c.VERSION,
         c.TIMESTAMP_UTC: datetime.timestamp(utc_now),
         c.DATETIME_UTC: datetime_utc
     }
