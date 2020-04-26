@@ -30,8 +30,8 @@ printf "${CYAN}Run ${NEW_IMAGE}:${NC}\n"
 docker run -d "$NEW_IMAGE"
 
 # done deploying, display images and containers
-printf "${CYAN}Docker images:${NC}\n"
-docker images
+#printf "${CYAN}Docker images:${NC}\n"
+#docker images
 printf "${CYAN}Docker containers:${NC}\n"
 docker ps
 printf "${GREEN}Deployed ${NEW_IMAGE}${NC}\n"
