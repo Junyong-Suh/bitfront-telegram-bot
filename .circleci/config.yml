@@ -2,33 +2,32 @@ version: 2.1
 
 jobs:
   build_and_push_docker_image:
-    docker:
-      - image: alpine:3.7
+#    docker:
+#      - image: alpine:3.7
+    machine: true
     steps:
       - checkout
-      - run: apk add --no-cache bash curl jq git docker
+#      - run: apk update && apk upgrade && apk add --no-cache git docker openssh openrc
+#      - run: rc-update add docker boot
       - run:
-          name: build docker image
+          name: build and push docker image
           command: |
             set -x
             REPO="https://github.com/Junyong-Suh/bitfront-telegram-bot.git"
+            git clone $REPO
+            cd bitfront-telegram-bot/
             LAST_GIT_TAG=$(git ls-remote --tags $REPO | awk '{print $2}' | grep -v '{}' | awk -F"/" '{print $3}' | sort -n -t. -k1,1 -k2,2 -k3,3 | tail -n 1)
+            DOCKER_HUB="zechery/bitfront-price-alert"
             NEW_IMAGE="${DOCKER_HUB}:${LAST_GIT_TAG}"
             docker build -t ${NEW_IMAGE} .
-      - run:
-          name: push docker image
-          command: |
-            set -x
-            REPO="https://github.com/Junyong-Suh/bitfront-telegram-bot.git"
-            LAST_GIT_TAG=$(git ls-remote --tags $REPO | awk '{print $2}' | grep -v '{}' | awk -F"/" '{print $3}' | sort -n -t. -k1,1 -k2,2 -k3,3 | tail -n 1)
-            NEW_IMAGE="${DOCKER_HUB}:${LAST_GIT_TAG}"
             docker push ${NEW_IMAGE}
   deploy:
-    docker:
-      - image: alpine:3.7
+#    docker:
+#      - image: alpine:3.7
+    machine: true
     steps:
       - checkout
-      - run: apk add --no-cache bash curl jq git docker ssh
+#      - run: apk add --no-cache openssh
       - run:
           name: deploy new image
           command: |
