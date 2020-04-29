@@ -1,4 +1,3 @@
-import confidentials
 import time
 import constants as c
 import logging
@@ -46,8 +45,8 @@ def all_exchanges():
 # the very main entry
 def main(argv, is_local=True):
     # exit if no receiver
-    if not confidentials.TELEGRAM_IDS_SUBSCRIBER:
-        logger.error("No Telegram IDs to notify - Set your confidentials.py (Read README.md)")
+    if not c.TELEGRAM_IDS_SUBSCRIBER:
+        logger.error("No Telegram IDs to notify")
         return
 
     # initialize
