@@ -1,4 +1,5 @@
 import constants as c
+import config
 from lib import utils
 
 ABSOLUTE_PERCENT_CHANGE = 10
@@ -22,13 +23,13 @@ def worth_by_values(current, pair):
 
 # lower bounds, but not zero (error or end of the world)
 def worth_downwards(current, pair):
-    lower_bound = c.THRESHOLDS[c.LOWER_BOUND][pair]
+    lower_bound = config.THRESHOLDS[c.LOWER_BOUND][pair]
     return 0 < current[pair] < lower_bound
 
 
 # upper bounds
 def worth_upwards(current, pair):
-    upper_bound = c.THRESHOLDS[c.UPPER_BOUND][pair]
+    upper_bound = config.THRESHOLDS[c.UPPER_BOUND][pair]
     return upper_bound < current[pair]
 
 

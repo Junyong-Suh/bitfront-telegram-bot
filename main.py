@@ -1,5 +1,6 @@
 import time
 import constants as c
+import config
 import logging
 import sys
 from lib import logger, utils, threshold
@@ -45,7 +46,7 @@ def all_exchanges():
 # the very main entry
 def main(argv, is_local=True):
     # exit if no receiver
-    if not c.TELEGRAM_IDS_SUBSCRIBER:
+    if not config.TELEGRAM_IDS_SUBSCRIBER:
         logger.error("No Telegram IDs to notify")
         return
 

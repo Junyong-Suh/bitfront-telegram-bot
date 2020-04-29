@@ -1,12 +1,12 @@
 import requests
-import constants as c
+import config
 import logging
 
 
 # ToDo: make the call fire and forget - not to block
 def to_es(index, payload):
     try:
-        r = requests.post(c.ES_HOST + index + "/_doc", json=payload)
+        r = requests.post(config.ES_HOST + index + "/_doc", json=payload)
         r.raise_for_status()
         logging.debug(r.text)
     except requests.exceptions.HTTPError as e:

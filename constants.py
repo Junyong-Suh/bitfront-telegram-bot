@@ -1,10 +1,6 @@
 # build & docker version - to be automated
-VERSION = "v1.6.0"
+VERSION = "v1.6.1"
 KEY_VERSION = "version"
-
-TELEGRAM_IDS_SUBSCRIBER = ["1045847434", "692300937"]  # JY (KR) JH
-# TELEGRAM_IDS_SUBSCRIBER = ["1045847434"]  # JY (KR)
-TELEGRAM_IDS_PREMIUM = ["1045847434"]  # JY
 
 # symbols and currencies
 BTC = "BTC"
@@ -54,23 +50,6 @@ EXCHANGE_PAIRS = {
 
 UPPER_BOUND = "upper"
 LOWER_BOUND = "lower"
-USD_KRW_EXCHANGE_RATE = 1215
-THRESHOLDS = {
-    UPPER_BOUND: {
-        BTC_USD: 8000,
-        ETH_USD: 200,
-        LN_USD: 12,
-        BTC_KRW: 8000 * USD_KRW_EXCHANGE_RATE,
-        ETH_KRW: 200 * USD_KRW_EXCHANGE_RATE
-    },
-    LOWER_BOUND: {
-        BTC_USD: 5500,
-        ETH_USD: 130,
-        LN_USD: 6,
-        BTC_KRW: 5500 * USD_KRW_EXCHANGE_RATE,
-        ETH_KRW: 130 * USD_KRW_EXCHANGE_RATE
-    }
-}
 
 # bitfront response keys
 KEY_RESPONSE_DATA = "responseData"
@@ -112,6 +91,3 @@ ES_INDEX_LOGS = "logs"
 ES_LOG_LEVEL = "level"
 ES_MSG = "msg"
 ES_LOG = "log"
-
-# The domain with https:// and trailing slash. For example, https://my-test-domain.us-east-1.es.amazonaws.com/
-ES_HOST = "https://search-bitfront-telegram-bot-bm2tdula3ijlvjsxgfafe7ab5a.us-west-1.es.amazonaws.com/"
