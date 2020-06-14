@@ -9,14 +9,14 @@ from lib import bitfront, upbit, coinbase, gopax
 
 
 # sorry for the function name ;)
-def voila(current_prices, last_prices, is_hourly):
+def voila(current_prices, last_prices, is_periodic):
     msg = ""
     has_events_to_notify = False
 
     # Bitfront, Coinbase, GoPax and Upbit
     for _, exchange in enumerate(c.EXCHANGE_PAIRS.keys()):
         # compose the msg and update the last price
-        if is_hourly:
+        if is_periodic:
             msg = msg + f.compose_msg(current_prices[exchange], last_prices[c.HOURLY][exchange])
             last_prices[c.HOURLY][exchange] = current_prices[exchange]
         else:
@@ -55,12 +55,12 @@ def main(argv, is_local=True):
 
     # get the last prices and notify
     while True:
-        is_hourly = utils.is_o_clock()
+        is_periodic = utils.true_every_3_hours()
         current_prices = all_exchanges()
         logger.info(current_prices)
 
-        msg, last_prices, has_events_to_notify = voila(current_prices, last_prices, is_hourly)
-        if is_hourly:
+        msg, last_prices, has_events_to_notify = voila(current_prices, last_prices, is_periodic)
+        if is_periodic:
             # hourly notification
             notify.to_subscribers(msg)
         elif has_events_to_notify:
@@ -79,4 +79,3 @@ if __name__ == "__main__":
     else:
         logging.basicConfig(level=logging.DEBUG)
         main(sys.argv[2:], True)   # local
-
