@@ -3,18 +3,18 @@ import constants as c
 USD_KRW_EXCHANGE_RATE = 1200
 THRESHOLDS = {
     c.UPPER_BOUND: {
-        c.BTC_USD: 10000,
-        c.ETH_USD: 260,
+        c.BTC_USD: 12000,
+        c.ETH_USD: 400,
         c.LN_USD: 15,
-        c.BTC_KRW: 10000 * USD_KRW_EXCHANGE_RATE,
-        c.ETH_KRW: 260 * USD_KRW_EXCHANGE_RATE
+        c.BTC_KRW: 12000 * USD_KRW_EXCHANGE_RATE,
+        c.ETH_KRW: 400 * USD_KRW_EXCHANGE_RATE
     },
     c.LOWER_BOUND: {
-        c.BTC_USD: 9200,
-        c.ETH_USD: 220,
-        c.LN_USD: 8,
-        c.BTC_KRW: 9200 * USD_KRW_EXCHANGE_RATE,
-        c.ETH_KRW: 220 * USD_KRW_EXCHANGE_RATE
+        c.BTC_USD: 10000,
+        c.ETH_USD: 300,
+        c.LN_USD: 10,
+        c.BTC_KRW: 10000 * USD_KRW_EXCHANGE_RATE,
+        c.ETH_KRW: 300 * USD_KRW_EXCHANGE_RATE
     }
 }
 

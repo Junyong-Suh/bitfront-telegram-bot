@@ -1,5 +1,6 @@
 import requests
 import confidentials
+import constants as c
 from lib import logger
 
 
@@ -17,8 +18,17 @@ def notify_on_telegram(telegram_ids, msg):
 
 # notify to Telegram chat
 def notify_telegram(bot_id, chat_id, msg):
-    r = requests.post(
-        url="https://api.telegram.org/bot" + bot_id + "/sendMessage",
-        json={"chat_id": chat_id, "text": msg}
-    )
-    logger.info(r.json())
+    try:
+        r = requests.post(
+            url="https://api.telegram.org/bot" + bot_id + "/sendMessage",
+            json={"chat_id": chat_id, "text": msg}
+        )
+        logger.info(r.json())
+    except requests.exceptions.HTTPError as e:
+        logger.error({c.ES_LOG: str(e)})
+    except requests.exceptions.ConnectionError as e:
+        logger.error({c.ES_LOG: str(e)})
+    except requests.exceptions.Timeout as e:
+        logger.error({c.ES_LOG: str(e)})
+    except requests.exceptions.RequestException as e:
+        logger.error({c.ES_LOG: str(e)})
