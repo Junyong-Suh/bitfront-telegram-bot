@@ -12,6 +12,7 @@ def get_coin_pair(ticker1, ticker2, timeout=3):
             timeout=timeout
         )
         r.raise_for_status()
+        logger.info(r.json())
         return r.json()
     except requests.exceptions.HTTPError as e:
         logger.error({c.ES_LOG: str(e)})
