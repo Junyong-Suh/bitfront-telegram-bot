@@ -1,5 +1,5 @@
 # build & docker version - to be automated
-VERSION = "v1.6.5"
+VERSION = "v1.6.6"
 KEY_VERSION = "version"
 
 # symbols and currencies
