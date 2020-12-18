@@ -1,31 +1,16 @@
 from datetime import datetime
-import requests
 import constants as c
-from lib import logger
+from lib import remote
 
 
-# get coin pair from bitfront
+# get coin pair from BitFront
 def get_coin_pair(ticker1, ticker2, timeout=3):
-    try:
-        r = requests.get(
-            "https://openapi.bitfront.me/v1/market/public/currentTickValue?coinPair=" + ticker1 + "." + ticker2 + "",
-            timeout=timeout
-        )
-        r.raise_for_status()
-        logger.info(r.json())
-        return r.json()
-    except requests.exceptions.HTTPError as e:
-        logger.error({c.ES_LOG: str(e)})
-    except requests.exceptions.ConnectionError as e:
-        logger.error({c.ES_LOG: str(e)})
-    except requests.exceptions.Timeout as e:
-        logger.error({c.ES_LOG: str(e)})
-    except requests.exceptions.RequestException as e:
-        logger.error({c.ES_LOG: str(e)})
-    return c.ERROR_RESPONSE[c.BITFRONT]
+    quote_url = "https://openapi.bitfront.me/v1/market/public/currentTickValue?coinPair=" + ticker1 + "." + ticker2 + ""
+    fallback_response = c.ERROR_RESPONSE[c.BITFRONT]
+    return remote.get_quote(quote_url, fallback_response, timeout)
 
 
-# Get last prices of ETH-USD, BTC-USD, LN-BTC from bitfront
+# Get last prices of ETH-USD, BTC-USD, LN-BTC from BitFront
 # calculate LN-USD from BTC-USD and LN-BTC
 def get_last_prices():
     r = get_coin_pair(c.ETH, c.USD)

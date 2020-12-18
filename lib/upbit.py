@@ -1,31 +1,16 @@
 from datetime import datetime
-import requests
 import constants as c
-from lib import logger
+from lib import remote
 
 
-# get coin pair from upbit
+# get coin pair from UPBIT
 def get_coin_pair(ticker1, ticker2, timeout=3):
-    try:
-        r = requests.get(
-            "https://api.upbit.com/v1/trades/ticks?market=" + ticker1 + "-" + ticker2 + "&count=1",
-            timeout=timeout
-        )
-        r.raise_for_status()
-        logger.info(r.json())
-        return r.json()
-    except requests.exceptions.HTTPError as e:
-        logger.error({c.ES_LOG: str(e)})
-    except requests.exceptions.ConnectionError as e:
-        logger.error({c.ES_LOG: str(e)})
-    except requests.exceptions.Timeout as e:
-        logger.error({c.ES_LOG: str(e)})
-    except requests.exceptions.RequestException as e:
-        logger.error({c.ES_LOG: str(e)})
-    return c.ERROR_RESPONSE[c.UPBIT]
+    quote_url = "https://api.upbit.com/v1/trades/ticks?market=" + ticker1 + "-" + ticker2 + "&count=1"
+    fallback_response = c.ERROR_RESPONSE[c.UPBIT]
+    return remote.get_quote(quote_url, fallback_response, timeout)
 
 
-# Get last prices of KRW-BTC, KRW-ETH from upbit
+# Get last prices of KRW-BTC, KRW-ETH from UPBIT
 def get_last_prices():
     r = get_coin_pair(c.KRW, c.BTC)
     btc_krw = r[0][c.KEY_TRADE_PRICE]

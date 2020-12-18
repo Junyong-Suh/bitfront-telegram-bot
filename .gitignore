@@ -3,3 +3,5 @@
 .idea/
 confidentials.py
 _config.yml
+venv/
+.venv/

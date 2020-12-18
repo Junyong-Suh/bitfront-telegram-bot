@@ -1,31 +1,16 @@
 from datetime import datetime
-import requests
 import constants as c
-from lib import logger
+from lib import remote
 
 
-# get coin pair from gopax
+# get coin pair from GOPAX
 def get_coin_pair(ticker1, ticker2, timeout=3):
-    try:
-        r = requests.get(
-            "https://api.gopax.co.kr/trading-pairs/" + ticker1 + "-" + ticker2 + "/ticker",
-            timeout=timeout
-        )
-        r.raise_for_status()
-        logger.info(r.json())
-        return r.json()
-    except requests.exceptions.HTTPError as e:
-        logger.error({c.ES_LOG: str(e)})
-    except requests.exceptions.ConnectionError as e:
-        logger.error({c.ES_LOG: str(e)})
-    except requests.exceptions.Timeout as e:
-        logger.error({c.ES_LOG: str(e)})
-    except requests.exceptions.RequestException as e:
-        logger.error({c.ES_LOG: str(e)})
-    return c.ERROR_RESPONSE[c.GOPAX]
+    quote_url = "https://api.gopax.co.kr/trading-pairs/" + ticker1 + "-" + ticker2 + "/ticker"
+    fallback_response = c.ERROR_RESPONSE[c.GOPAX]
+    return remote.get_quote(quote_url, fallback_response, timeout)
 
 
-# Get last prices of KRW-BTC, KRW-ETH from gopax
+# Get last prices of KRW-BTC, KRW-ETH from GOPAX
 def get_last_prices():
     r = get_coin_pair(c.BTC, c.KRW)
     btc_krw = r[c.KEY_PRICE]

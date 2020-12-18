@@ -1,31 +1,16 @@
 from datetime import datetime
-import requests
 import constants as c
-from lib import logger
+from lib import logger, remote
 
 
-# get coin pair from coinbase
+# get coin pair from CoinBase
 def get_coin_pair(ticker, timeout=5):
-    try:
-        r = requests.get(
-            "https://api.coinbase.com/v2/exchange-rates?currency=" + ticker,
-            timeout=timeout
-        )
-        r.raise_for_status()
-        logger.info(r.json())
-        return r.json()
-    except requests.exceptions.HTTPError as e:
-        logger.error({c.ES_LOG: str(e)})
-    except requests.exceptions.ConnectionError as e:
-        logger.error({c.ES_LOG: str(e)})
-    except requests.exceptions.Timeout as e:
-        logger.error({c.ES_LOG: str(e)})
-    except requests.exceptions.RequestException as e:
-        logger.error({c.ES_LOG: str(e)})
-    return c.ERROR_RESPONSE[c.COINBASE]
+    quote_url = "https://api.coinbase.com/v2/exchange-rates?currency=" + ticker
+    fallback_response = c.ERROR_RESPONSE[c.COINBASE]
+    return remote.get_quote(quote_url, fallback_response, timeout)
 
 
-# Get last rates of BTC and ETH from coinbase
+# Get last rates of BTC and ETH from CoinBase
 def get_last_prices():
     r_btc = get_coin_pair(c.BTC)
     btc_rates = r_btc[c.KEY_DATA][c.KEY_RATES]
