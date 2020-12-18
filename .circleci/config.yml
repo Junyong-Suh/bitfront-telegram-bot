@@ -1,5 +1,6 @@
 version: 2.1
 
+# credentials are on ci/cd
 jobs:
   build_and_push_docker_image:
     machine: true
@@ -23,7 +24,7 @@ jobs:
       - run:
           name: deploy new image
           command: |
-            ssh ec2-user@54.193.101.211 ./circle.sh
+            ssh ${DEPLOY_USER_PROD}@${SERVER_PROD} ./circle.sh
 
 workflows:
   version: 2.1
