@@ -23,7 +23,7 @@ jobs:
       - run:
           name: deploy new image
           command: |
-            ssh ec2-user@ec2-3-101-40-44.us-west-1.compute.amazonaws.com ./circle.sh
+            ssh ec2-user@54.193.101.211 ./circle.sh
 
 workflows:
   version: 2.1
