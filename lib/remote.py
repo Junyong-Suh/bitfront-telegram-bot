@@ -9,6 +9,9 @@ def get_quote(quote_url, fallback_response, timeout=3):
         r = requests.get(quote_url, timeout=timeout)
         r.raise_for_status()
         logger.info(f"r.status_code: {r.status_code}, r.json(): {r.json()}")
+
+        if r.status_code == 200:
+            return r.json()
     except requests.exceptions.HTTPError as e:
         logger.error({c.ES_LOG: str(e)})
     except requests.exceptions.ConnectionError as e:
@@ -20,7 +23,4 @@ def get_quote(quote_url, fallback_response, timeout=3):
     except requests.exceptions as e:
         logger.error({c.ES_LOG: str(e)})
 
-    if r.status_code == 200:
-        return r.json()
-    else:
-        return fallback_response
+    return fallback_response
