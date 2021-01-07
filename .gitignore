@@ -1,7 +1,6 @@
 *__pycache__*
 *.pyc
 .idea/
-confidentials.py
 _config.yml
 venv/
 .venv/
