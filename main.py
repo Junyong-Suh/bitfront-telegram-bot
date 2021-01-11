@@ -55,7 +55,7 @@ def main(argv, is_local=True):
 
     # get the last prices and notify
     while True:
-        is_periodic = utils.true_every_3_hours()
+        is_periodic = utils.true_every_1_hour()
         current_prices = all_exchanges()
         logger.info(current_prices)
 
