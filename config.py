@@ -3,7 +3,7 @@ import constants as c
 USD_KRW_EXCHANGE_RATE = 1100
 THRESHOLDS = {
     c.UPPER_BOUND: {
-        c.BTC_USD: 40000,
+        c.BTC_USD: 41000,
         c.ETH_USD: 1300,
         c.LN_USD: 15,
         c.BTC_KRW: 40000 * USD_KRW_EXCHANGE_RATE,
