@@ -33,10 +33,14 @@ workflows:
       - build_and_push_docker_image:
           filters:
             branches:
-              only: master
+              only:
+                - master
+                - ec2_based 
       - deploy:
           requires:
             - build_and_push_docker_image
           filters:
             branches:
-              only: master
+              only:
+                - master
+                - ec2_based
