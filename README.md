@@ -85,6 +85,10 @@ docker build -t bitfront-price-alert .
 ```
 docker run bitfront-price-alert:latest
 ```
+or
+```
+docker run -d -e FOREIGN_WORKER_BOT_ID={NUMBER}:{KEY} bitfront-price-alert:latest
+```
 
 ## References
 * [https://core.telegram.org/bots/api#making-requests](https://core.telegram.org/bots/api#making-requests)
